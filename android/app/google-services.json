@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "353512373711",
+    "firebase_url": "https://mad-assignment-24697.firebaseio.com",
+    "project_id": "mad-assignment-24697",
+    "storage_bucket": "mad-assignment-24697.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353512373711:android:ed3ac123a7d819a6cb66ba",
+        "android_client_info": {
+          "package_name": "com.BaraiDev.assignment_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353512373711-ni63mdkl2k7jp9a7udnmai3795fu13q9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWXuG1p6zJQaALK2LSxiDlFaHXVGTENUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353512373711-ni63mdkl2k7jp9a7udnmai3795fu13q9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
