@@ -67,43 +67,46 @@ class _ChatPageState extends State<ChatPage> {
           )
         ),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: 35,
-            width: 110,
-            child: Center(child: Text('CHATS', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 19),)),
-            decoration: BoxDecoration(
-              color: primarySwatch,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(17.5),
-                bottomRight: Radius.circular(17.5)
-              )
-            ),
-          ),
-          SizedBox(width:100,),
-          Container(
-            height: 35,
-            width: 150,
-            child: Center(
-              child: TextFormField(
-                style: TextStyle(fontSize: 14),
-                controller: _chatSearchTextController,
-                decoration: InputDecoration(
-                  labelText: 'Search',
-                  labelStyle: TextStyle(color: primarySwatch, fontWeight: FontWeight.w300),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  suffixIcon: Icon(Icons.search_sharp, color: primarySwatch,),
-                  enabledBorder: _borderDecoration,
-                  focusedBorder: _borderDecoration
-                ),
+      child: Padding(
+        padding: EdgeInsets.only(top: 15),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 35,
+              width: 110,
+              child: Center(child: Text('CHATS', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 19),)),
+              decoration: BoxDecoration(
+                color: primarySwatch,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(17.5),
+                  bottomRight: Radius.circular(17.5)
+                )
               ),
             ),
-          )
-        ],
+            SizedBox(width:100,),
+            Container(
+              height: 35,
+              width: 150,
+              child: Center(
+                child: TextFormField(
+                  style: TextStyle(fontSize: 14),
+                  controller: _chatSearchTextController,
+                  decoration: InputDecoration(
+                    labelText: 'Search',
+                    labelStyle: TextStyle(color: primarySwatch, fontWeight: FontWeight.w300),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    suffixIcon: Icon(Icons.search_sharp, color: primarySwatch,),
+                    enabledBorder: _borderDecoration,
+                    focusedBorder: _borderDecoration
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
