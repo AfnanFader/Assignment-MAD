@@ -1,9 +1,11 @@
 import 'package:assignment_project/model/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _database = FirebaseFirestore.instance;
 
   Stream<UserID> get loginStream {
     return _auth.authStateChanges().map((User data) {
@@ -19,28 +21,34 @@ class AuthService {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password)
       .then((UserCredential user) {
-        print("[Firebase] Logging in process completed");
+        print("[FirebaseAuth] Logging in process completed");
       });
     } catch (e) {
-      print("[Firebase] Error during logging");
+      print("[FirebaseAuth] Error during logging");
     }
   }
 
   signOut() async {
     try {
       await _auth.signOut().then((_) {
-        print("[FIrebase] Succesful sign out");
+        print("[FirebaseAuth] Succesful sign out");
       });  
     } catch (e) {
-      print("[Firebase] Error during logging out $e");
+      print("[FirebaseAuth] Error during logging out $e");
     }
   }
 
-  signUp(String email, String password) async {
+  Future<bool> signUp(String email, String password, UserDetail data) async {
       try {
-        await _auth.createUserWithEmailAndPassword(email: email, password: password);
+        return await _auth.createUserWithEmailAndPassword(email: email, password: password).then((uid) async {
+          return await _database.collection('User').doc(uid.user.uid).set(data.toMap()).then((value) {
+            print('[Firestore] User Registered');
+            return true;
+          });
+        });
       } catch (e) {
-        print("[Firestore] Failed Sign Up");
+        print("[FirebaseAuth] Failed Sign Up");
+        return false;
       }
   }
 }

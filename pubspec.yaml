@@ -33,6 +33,9 @@ dependencies:
   font_awesome_flutter: ^8.10.1
   salomon_bottom_bar: ^2.0.0
 
+  #state management
+  provider: ^4.3.2+3
+
   flutter:
     sdk: flutter
 
