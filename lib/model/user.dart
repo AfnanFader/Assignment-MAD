@@ -24,10 +24,10 @@ class UserDetail {
     username = data['username'];
     email = data['email'];
     phone = data['phone'];
-    address = data['address'];
+    address = data['address'] ?? '';
     isMale = data['isMale'];
-    postDoc = data['postDoc'];
-    wishlist = data['wishlist'];
+    postDoc = data['postDoc'] ?? [];
+    wishlist = data['wishlist'] ?? [];
   }
 
   Map<String, dynamic> toMap() {

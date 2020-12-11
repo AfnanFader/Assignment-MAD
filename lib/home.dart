@@ -1,10 +1,13 @@
 import 'package:assignment_project/model/localSetting.dart';
+import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:assignment_project/pages/BlogPage.dart';
 import 'package:assignment_project/pages/ChatPage.dart';
 import 'package:assignment_project/pages/HomePage.dart';
 import 'package:assignment_project/pages/ProfilePage.dart';
+import 'package:assignment_project/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class Home extends StatefulWidget {
@@ -20,6 +23,13 @@ class _HomeState extends State<Home> {
   );
 
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    UserNotifier notifier = Provider.of<UserNotifier>(context, listen: false);
+    DatabaseService().getUserData(notifier.getUserUID).then((user) => notifier.setUserData = user);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

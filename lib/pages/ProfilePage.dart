@@ -1,8 +1,10 @@
 import 'package:assignment_project/model/localSetting.dart';
+import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:assignment_project/pages/EditProfilePage.dart';
 import 'package:assignment_project/pages/NewPostPage.dart';
 import 'package:assignment_project/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
 
@@ -100,67 +102,69 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
           color: Colors.white,
           child: Stack(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding:EdgeInsets.only(top: 50),
-                    child: CircleAvatar(
-                      radius: 46,
-                      backgroundColor: primarySwatch,
+              Consumer<UserNotifier>(
+                builder: (context, notifier, widget) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding:EdgeInsets.only(top: 50),
                       child: CircleAvatar(
-                        radius: 44,
-                        backgroundColor: Colors.white,
-                        child: Text('M',style: TextStyle(color: primarySwatch, fontSize: 35),),
+                        radius: 46,
+                        backgroundColor: primarySwatch,
+                        child: CircleAvatar(
+                          radius: 44,
+                          backgroundColor: Colors.white,
+                          child: Text('${notifier.getUserData.username[0].toUpperCase()}',style: TextStyle(color: primarySwatch, fontSize: 35),),
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                     padding:EdgeInsets.only(top: 10),
-                    child: Text('Mikasa Abdullah', style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),),
-                  ),
-                  Padding(
-                     padding:EdgeInsets.only(top: 3),
-                    child: Text('mikasa.abdullah@gmail.com',style: TextStyle(color: Colors.black, fontSize: 12,)),
-                  ),
-                  Padding(
-                     padding:EdgeInsets.only(top: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RaisedButton(
-                          elevation: 2,
-                          color: Colors.white,
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => EditProfilePage())),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(color: primarySwatch, width: 1)
-                          ),
-                          child: Container(
-                            width: 90,
-                            child: Center(child: Text('Edit Profile', style: TextStyle(color: primarySwatch, fontSize: 13),)),
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        RaisedButton(
-                          elevation: 2,
-                          color: primarySwatch,
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => NewPostPage())),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(color: primarySwatch,width: 1)
-                          ),
-                          child: Container(
-                            width: 90,
-                            child: Center(child: Text('New Post', style: TextStyle(color: Colors.white, fontSize: 13),)),
-                          ),
-                        )
-                      ],
+                    Padding(
+                       padding:EdgeInsets.only(top: 10),
+                      child: Text('${notifier.getUserData.username}', style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),),
                     ),
-                  )
-                ],
+                    Padding(
+                       padding:EdgeInsets.only(top: 3),
+                      child: Text('${notifier.getUserData.email}',style: TextStyle(color: Colors.black, fontSize: 12,)),
+                    ),
+                    Padding(
+                       padding:EdgeInsets.only(top: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RaisedButton(
+                            elevation: 2,
+                            color: Colors.white,
+                            onPressed: () => Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => EditProfilePage())),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(color: primarySwatch, width: 1)
+                            ),
+                            child: Container(
+                              width: 90,
+                              child: Center(child: Text('Edit Profile', style: TextStyle(color: primarySwatch, fontSize: 13),)),
+                            ),
+                          ),
+                          SizedBox(width: 10,),
+                          RaisedButton(
+                            elevation: 2,
+                            color: primarySwatch,
+                            onPressed: () => Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => NewPostPage())),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(color: primarySwatch,width: 1)
+                            ),
+                            child: Container(
+                              width: 90,
+                              child: Center(child: Text('New Post', style: TextStyle(color: Colors.white, fontSize: 13),)),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
               Positioned(
                 top: 15,

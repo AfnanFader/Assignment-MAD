@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:assignment_project/home.dart';
 import 'package:assignment_project/model/localSetting.dart';
 import 'package:assignment_project/model/user.dart';
+import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:assignment_project/pages/LoginPage.dart';
 import 'package:assignment_project/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,13 +18,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: primarySwatch,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return ChangeNotifierProvider(
+      create: (context) => UserNotifier(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: primarySwatch,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: Wrapper()
       ),
-      home: Wrapper()
     );
   }
 }
@@ -54,15 +59,17 @@ class _WrapperState extends State<Wrapper> {
         //Initialization done. TODO : IMPLEMENT GLOBAL STATE MANAGEMENT
         if (init.connectionState == ConnectionState.done) {
           return StreamBuilder<UserID>(
-            stream: AuthService().loginStream,
-            builder: (context, snapshot) {
-              if (snapshot.data != null) {
-                return HomeTransitionPage();
-              } else {
-                return LoginPage();
-              }
-            },
-          );
+          stream: AuthService().loginStream,
+          builder: (context, snapshot) {
+            UserNotifier userNotifier = Provider.of<UserNotifier>(context, listen: false);
+            if (snapshot.data != null) {
+              userNotifier.setUserUID = snapshot.data.uid;
+              return HomeTransitionPage();
+            } else {
+              return LoginPage();
+            }
+          },
+            );
         } else {
           //Initialization status [waiting, failing, starting]
           return Container(
@@ -88,8 +95,12 @@ class _HomeTransitionPageState extends State<HomeTransitionPage> {
   @override
   void initState() {
     _initPage = true;
-    startTimer();
+    awaitChange();
     super.initState();
+  }
+
+  awaitChange() async {
+    Timer(Duration(seconds: 1), ()=> startTimer());
   }
 
   startTimer() async {

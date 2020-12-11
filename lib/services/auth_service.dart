@@ -47,7 +47,7 @@ class AuthService {
           });
         });
       } catch (e) {
-        print("[FirebaseAuth] Failed Sign Up");
+        print("[FirebaseAuth] Failed Sign Up : ${e.toString()}");
         return false;
       }
   }

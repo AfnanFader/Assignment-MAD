@@ -1,4 +1,6 @@
+import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -13,23 +15,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: SingleChildScrollView(
-              child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Container(
-                color: Colors.blueAccent,
-                width: MediaQuery.of(context).size.width/2,
-                height: 30,
-              ),
-            ),
-            
-          ],
-        ),
+      child: Consumer<UserNotifier>(
+        builder: (context, notifier, widget) => Center(child: Text(notifier.getUserUID),),
       )
     );
   }
