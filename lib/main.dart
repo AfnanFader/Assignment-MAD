@@ -121,8 +121,20 @@ class _HomeTransitionPageState extends State<HomeTransitionPage> {
     return Scaffold(
       backgroundColor: primarySwatch,
       body: Center(
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('ALMOST THERE ... !!!!', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),),
+            SizedBox(height: 20,),
+            Container(
+              child: Image.asset(
+                'assets/image/cat-noodle.gif',
+                fit: BoxFit.cover
+              ),
+            ),
+            SizedBox(height: 20,),
+            Text('YOU NEED TO CALM DOWN', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),),
+          ],
         )
       ),
     );

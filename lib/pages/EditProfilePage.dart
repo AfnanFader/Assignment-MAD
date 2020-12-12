@@ -1,6 +1,8 @@
 import 'package:assignment_project/model/localSetting.dart';
+import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -26,11 +28,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   void initState() {
-    _isMale = true;
-    _nameController = TextEditingController(text: 'AYAM');
-    _emailController = TextEditingController(text: 'AyamPercik@Mantap.com');
-    _phoneController = TextEditingController(text: '911 - BITCH');
-    _locationController = TextEditingController();
+    UserNotifier notifier = Provider.of<UserNotifier>(context, listen: false);
+    _isMale = notifier.getUserData.isMale;
+    _nameController = TextEditingController(text: notifier.getUserData.username);
+    _emailController = TextEditingController(text: notifier.getUserData.email);
+    _phoneController = TextEditingController(text: notifier.getUserData.phone);
+    _locationController = TextEditingController(text: notifier.getUserData.address);
     super.initState();
   }
 

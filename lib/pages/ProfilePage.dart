@@ -59,18 +59,11 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                 child: TabBarView(
                   controller: _controller,
                   children: [
-                    ListView.builder(
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(top: 30),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 30,
-                            color: Colors.red,
-                          ),
-                        );
-                      },
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: Text('U got nothin boi'),
+                      )
                     ),
                     ListView.builder(
                       itemCount: 10,

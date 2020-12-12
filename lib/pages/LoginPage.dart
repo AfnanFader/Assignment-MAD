@@ -580,7 +580,7 @@ class _RegisterPageState extends State<RegisterPage> {
           isDense: true,
           errorBorder: _borderDecorationError,
           focusedErrorBorder: _borderDecoration,
-          labelText: 'Address',
+          labelText: 'Address (Optional)',
           hintStyle: TextStyle(color: Colors.white54),
           hintText: 'No 45, Taman Selayang,\nBandar Baru, Puchong,\n50803, Kuala Lumpur',
           labelStyle: TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold),

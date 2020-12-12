@@ -18,8 +18,9 @@ class _NewPostPageState extends State<NewPostPage> {
   final TextEditingController _addInfoController = TextEditingController();
   final List<String> _petType = [
     'Cat', 'Dog', 'Hamster', 'Crocodile',
-    'Birds', 'Elephant', 'Tiger'
+    'Birds', 'Elephant', 'Tiger' ,'Pet Type'
   ];
+  String _dropdownvalue = 'Pet Type';
   bool _isVacinated;
   bool _isMale;
   final _borderDecoration = OutlineInputBorder(
@@ -112,42 +113,73 @@ class _NewPostPageState extends State<NewPostPage> {
                         Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: Container(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: DropdownButton<String>(
-                                    items: _petType.map((value) {
-                                      return DropdownMenuItem(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {},
-                                  ),
-                                ),
-                                SizedBox(width: 5,),
-                                Expanded(
-                                  child: Container(
-                                    height: 50,
-                                    child: TextFormField(
-                                      style: _textInputStyle,
-                                      controller: _ageController,
-                                      decoration: InputDecoration(
-                                        focusedBorder: _borderDecoration,
-                                        enabledBorder: _borderDecoration,
-                                        labelText: 'Age (Year)',
-                                        labelStyle: _labelTextStyle,
-                                        floatingLabelBehavior: FloatingLabelBehavior.always
+                            height: 60,
+                            // color: Colors.red,
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children : [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(15),
+                                          border: Border.all(width: 2, color: primarySwatch)
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 10, right: 2),
+                                          child: DropdownButton<String>(
+                                            style: _textInputStyle,
+                                            iconSize: 26,
+                                            iconEnabledColor: primarySwatch,
+                                            isExpanded: true,
+                                            value: _dropdownvalue,
+                                            items: _petType.map((value) {
+                                              return DropdownMenuItem(
+                                                value: value,
+                                                child: Text(value),
+                                              );
+                                            }).toList(),
+                                            onChanged: (value) => setState(() => _dropdownvalue = value),
+                                          ),
+                                        )
                                       ),
                                     ),
+                                    SizedBox(width: 10,),
+                                    Expanded(
+                                      child: Container(
+                                        height: 50,
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          style: _textInputStyle,
+                                          controller: _ageController,
+                                          decoration: InputDecoration(
+                                            focusedBorder: _borderDecoration,
+                                            enabledBorder: _borderDecoration,
+                                            labelText: 'Age (Year)',
+                                            labelStyle: _labelTextStyle,
+                                            floatingLabelBehavior: FloatingLabelBehavior.always
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Positioned(
+                                  top: 0,
+                                  left: 4,
+                                  child: Container(
+                                    width: 80,
+                                    color: Colors.white,
+                                    child: Center(child: Text('Pet Type', style: TextStyle(color: primarySwatch, fontSize: 15, fontWeight: FontWeight.bold),)),
                                   ),
                                 )
-                              ],
+                              ]
                             ),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 15),
+                          padding: EdgeInsets.only(top: 20),
                           child: Container(
                             height: 50,
                             child: TextFormField(
