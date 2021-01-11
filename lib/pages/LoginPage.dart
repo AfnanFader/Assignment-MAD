@@ -228,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(27),
                       child: Image.asset(
-                        'assets/image/google.jpg',
+                        'assets/image/GoogleSignIn.png',
                         fit: BoxFit.contain,
                       ),
                     ),
