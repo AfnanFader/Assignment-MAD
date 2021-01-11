@@ -106,14 +106,31 @@ class _BlogPageState extends State<BlogPage> {
           },
         child: Card(
           child: Container(
-            height: 100,
+            height: 65,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTile(
-                  leading: Icon(Icons.album), //image
+
+                  leading: Image.network(
+                    data.image,
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+                      if (loadingProgress == null)
+                        return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                          : null,
+                        ),
+                      );
+                    }
+                  ),
+
                   title: Text(data.title, style: TextStyle(color:Colors.pink),),
+
                   trailing: Icon(Icons.arrow_forward_ios, color: Colors.red,),
+
                 ),
               ],
             ),
