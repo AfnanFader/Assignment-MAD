@@ -2,6 +2,8 @@ import 'package:assignment_project/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
+
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -51,4 +53,23 @@ class AuthService {
         return false;
       }
   }
+
+
+usernamefx(String email) async {
+  try {
+      await _database.collection('User').doc().set({
+        'email': email,
+        'address' : "",
+        'isMale' : true,
+        'phone' : "",
+        'postDoc' : null,
+        'username' : email,
+        'wishlist' : null,
+      });
+  } catch (e) {
+    print("[FirebaseAuth] Error usernamefx $e");
+  }
+}
+
+
 }

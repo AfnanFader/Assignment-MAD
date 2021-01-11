@@ -209,8 +209,22 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                  onTap: () {},
                   onLongPress: () {},
+                  onTap: (){
+                    final provider = Provider.of<UserNotifier>(context, listen: false);
+                    provider.googleLogin();
+                  },
+                  // onTap: () {
+                  //   signInWithGoogle().whenComplete(() {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) {
+                  //           return LoginPage();
+                  //         },
+                  //       ),
+                  //     );
+                  //   });
+                  // },
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(27),
                       child: Image.asset(
