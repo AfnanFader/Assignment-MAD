@@ -1,5 +1,8 @@
+import 'package:assignment_project/model/blog.dart';
+import 'package:assignment_project/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:assignment_project/model/localSetting.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BlogPage extends StatefulWidget {
 
@@ -11,17 +14,56 @@ class BlogPage extends StatefulWidget {
 
 class _BlogPageState extends State<BlogPage> {
 
+
+  Stream<List<BlogTrending>> blogTrending;
+
+   @override
+  void initState() {
+    super.initState();
+    blogTrending = DatabaseService().getBlogTrending();
+ 
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          _topPageTitle(), _cardTest()
-        ],
-      )
+    return Scaffold(
+
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.white,
+        child: Column(
+          
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _topPageTitle(), 
+
+
+            StreamBuilder<List<BlogTrending>>(
+              stream: blogTrending,
+              builder: (context, card){
+                if (card.hasData){
+                  if(card.data.isNotEmpty){
+                    return Container(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                          itemCount: card.data.length,
+                          itemBuilder: (context, index){
+                            return _cardTest(context, card.data[index], index, card.data.length);
+                          } 
+                      ),
+                    );
+                  }
+                  return Container(color: Colors.white, child: CircularProgressIndicator(backgroundColor: Colors.blue,));
+                }
+                else 
+                  return Center(child: CircularProgressIndicator(backgroundColor: Colors.pink,),);
+                }
+              ),
+
+
+          ],
+        )
+      ),
     );
     
   }
@@ -55,35 +97,28 @@ class _BlogPageState extends State<BlogPage> {
     );
   }
   
-  Widget _cardTest() {
-    return Center(
-      child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const ListTile(
-              leading: Icon(Icons.album),
-              title: Text('The Enchanted Nightingale'),
-              subtitle: Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+  Widget _cardTest(BuildContext context, BlogTrending data, int index, int currentIndex) {
+    return GestureDetector(
+        onTap: () async {
+            if (await canLaunch(data.link)) {
+              await launch(data.link);
+            }
+          },
+        child: Card(
+          child: Container(
+            height: 100,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TextButton(
-                  child: const Text('BUY TICKETS'),
-                  onPressed: () {/* ... */},
+                ListTile(
+                  leading: Icon(Icons.album), //image
+                  title: Text(data.title, style: TextStyle(color:Colors.pink),),
+                  trailing: Icon(Icons.arrow_forward_ios, color: Colors.red,),
                 ),
-                const SizedBox(width: 8),
-                TextButton(
-                  child: const Text('LISTEN'),
-                  onPressed: () {/* ... */},
-                ),
-                const SizedBox(width: 8),
               ],
             ),
-          ],
+          ),
         ),
-      ),
-    );
+      );
   }
 }

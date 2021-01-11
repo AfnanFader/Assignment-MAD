@@ -211,29 +211,14 @@ class _LoginPageState extends State<LoginPage> {
                 GestureDetector(
                   onTap: () {},
                   onLongPress: () {},
-                  child: CircleAvatar(
-                    radius: 23,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      FontAwesomeIcons.facebookF,
-                      size: 28,
-                      color: Colors.blue[700],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  onLongPress: () {},
-                  child: CircleAvatar(
-                    child: ClipRRect(
+                  child: ClipRRect(
                       borderRadius: BorderRadius.circular(27),
                       child: Image.asset(
                         'assets/image/GoogleSignIn.png',
-                        fit: BoxFit.contain,
+                        
                       ),
                     ),
-                    radius: 23,
-                  ),
+                   
                 ),
               ],
             ),
