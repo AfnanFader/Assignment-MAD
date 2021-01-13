@@ -181,8 +181,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                   icon: Icon(Icons.logout, color: primarySwatch, size: 26,),
                   //onPressed: () => AuthService().signOut(),
                   onPressed: (){
-                    final provider =
-                    Provider.of<UserNotifier>(context, listen: false);
+                    final provider = Provider.of<UserNotifier>(context, listen: false);
                     provider.logout();
                     AuthService().signOut();
                   },

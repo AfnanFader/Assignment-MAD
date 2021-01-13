@@ -33,6 +33,8 @@ class UserNotifier with ChangeNotifier {
 
 
   // ------------------ DAN GOOGLE SIGN IN ---------------------------//
+
+
   final googleSignIn = GoogleSignIn();
   bool _isSigningIn;
 
@@ -66,8 +68,8 @@ class UserNotifier with ChangeNotifier {
 
       await FirebaseAuth.instance.signInWithCredential(credential)
       .then((value) {
-        AuthService().usernamefx(value.user.email);
-        //value.user.email;
+        AuthService().usernamefx(value.user.email, value.user.uid);
+        _userUID = value.user.uid; //tak jadi
       });
 
       isSigningIn = false;

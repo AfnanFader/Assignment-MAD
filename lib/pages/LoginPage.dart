@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               //ANONYMOUS USER ENTRY
-              Positioned(
+              Positioned( //skip button
                 top: 0,
                 right: 0,
                 child: FlatButton(
@@ -180,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _forgotPassword() {
+  Widget _forgotPassword() { ///google sign in as well
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -209,10 +209,11 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                  onLongPress: () {},
                   onTap: (){
                     final provider = Provider.of<UserNotifier>(context, listen: false);
                     provider.googleLogin();
+                    // .then((value) => provider.setUserUID = 
+                    // );
                   },
                   // onTap: () {
                   //   signInWithGoogle().whenComplete(() {
