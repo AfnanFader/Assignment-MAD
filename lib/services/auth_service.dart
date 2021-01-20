@@ -1,6 +1,9 @@
 import 'package:assignment_project/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+
 
 class AuthService {
 
@@ -51,4 +54,42 @@ class AuthService {
         return false;
       }
   }
+
+
+usernamefx(String email, String uid) async {
+  try {
+
+    Query q = FirebaseFirestore.instance.collection("User").where('email', isEqualTo: email);
+
+    q.get().then((value) async{
+      if(value.docs.isEmpty){
+        print('email not existed');
+        await _database.collection('User').doc(uid).set({
+          'email': email,
+          'address' : "",
+          'isMale' : true,
+          'phone' : "",
+          'postDoc' : null,
+          'username' : email,
+          'wishlist' : null,
+        });
+
+        //subscribe to notifier
+
+      } else {
+        print('email existed already');
+        //subscribe to notifier
+      }
+    } 
+    );
+      
+  } catch (e) {
+    print("[FirebaseAuth] Error usernamefx $e");
+  }
 }
+
+
+}
+
+
+
