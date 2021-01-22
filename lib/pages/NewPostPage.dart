@@ -1,6 +1,7 @@
 import 'package:assignment_project/model/localSetting.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 
 class NewPostPage extends StatefulWidget {
   @override
@@ -21,8 +22,6 @@ class _NewPostPageState extends State<NewPostPage> {
     'Birds', 'Elephant', 'Tiger' ,'Pet Type'
   ];
   String _dropdownvalue = 'Pet Type';
-  bool _isVacinated;
-  bool _isMale;
   final _borderDecoration = OutlineInputBorder(
     borderRadius: BorderRadius.circular(15),
     borderSide: BorderSide(
@@ -31,7 +30,12 @@ class _NewPostPageState extends State<NewPostPage> {
     )
   );
   final _labelTextStyle = TextStyle(color: primarySwatch, fontWeight: FontWeight.bold, fontSize: 20);
-  final _textInputStyle = TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold);
+  final _textInputStyle = TextStyle(fontSize: 18, color: Colors.black);
+
+  bool _isVacinated;
+  bool _isMale;
+  List<Asset> images = List<Asset>();
+  String _error = 'No Error Dectected';
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +46,7 @@ class _NewPostPageState extends State<NewPostPage> {
           color: Colors.white,
           child: Stack(
             children: [
+
               Positioned(
                 top: 15,
                 child: Container(
@@ -57,6 +62,7 @@ class _NewPostPageState extends State<NewPostPage> {
                   ),
                 ),
               ),
+              
               Form(
                 key: _editPostForm,
                 child: Padding(
@@ -66,33 +72,57 @@ class _NewPostPageState extends State<NewPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+
                         Text('Upload Image', style: _subHeadingTextStyle,),
+
                         Padding(
                           padding: EdgeInsets.only(top: 10),
                           child: Container(
-                            height: 100,
-                            child: ListView.builder(
+                            height: 115,
+                            child: ListView.builder(                          
                               scrollDirection: Axis.horizontal,
-                              itemCount: 5,
+                              itemCount: 6,
                               itemBuilder: (context, index) {
                                 return Padding(
-                                  padding: EdgeInsets.only(right: 5),
-                                  child: Card(
+                                  padding: const EdgeInsets.only(right: 15.0),
+                                  child: OutlineButton(
+                                    highlightColor: Colors.grey[100],
+                                    child: images.asMap()[index] == null ?
+                                      Icon(Icons.cloud_download, color: Colors.grey[700], size: 30,) :
+                                      //Icon(Icons.ac_unit, color: Colors.grey[700], size: 30,),
+                                      AssetThumb(
+                                        asset: images[index],
+                                        height: 110,
+                                        width: 70,
+                                      ),
+                                    onPressed: (){
+                                      loadAssets();
+                                    },
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                       side: BorderSide(color: primarySwatch, width: 1) 
                                     ),
-                                    child: Container(
-                                      width: 100,
-                                      height: 40,
-                                      child: Icon(Icons.cloud_download, color: Colors.grey[700], size: 30,),
-                                    ),
                                   ),
                                 );
+                                // return Padding(
+                                //   padding: EdgeInsets.only(right: 15),
+                                //   child: Card(
+                                //       shape: RoundedRectangleBorder(
+                                //         borderRadius: BorderRadius.circular(15),
+                                //         side: BorderSide(color: primarySwatch, width: 1) 
+                                //       ),
+                                //       child: Container(
+                                //         width: 100,
+                                //         height: 40,
+                                //         child: Icon(Icons.cloud_download, color: Colors.grey[700], size: 30,),
+                                //       ),
+                                //     ),
+                                // );
                               },
                             ),
                           ),
                         ),
+
                         Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: Container(
@@ -110,6 +140,7 @@ class _NewPostPageState extends State<NewPostPage> {
                             ),
                           ),
                         ),
+
                         Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: Container(
@@ -133,6 +164,7 @@ class _NewPostPageState extends State<NewPostPage> {
                                             iconSize: 26,
                                             iconEnabledColor: primarySwatch,
                                             isExpanded: true,
+                                            elevation: 0,
                                             value: _dropdownvalue,
                                             items: _petType.map((value) {
                                               return DropdownMenuItem(
@@ -178,6 +210,7 @@ class _NewPostPageState extends State<NewPostPage> {
                             ),
                           ),
                         ),
+                        
                         Padding(
                           padding: EdgeInsets.only(top: 20),
                           child: Container(
@@ -195,6 +228,7 @@ class _NewPostPageState extends State<NewPostPage> {
                             ),
                           ),
                         ),
+                        
                         Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: Container(
@@ -264,7 +298,7 @@ class _NewPostPageState extends State<NewPostPage> {
                                       decoration: InputDecoration(
                                         focusedBorder: _borderDecoration,
                                         enabledBorder: _borderDecoration,
-                                        labelText: 'Dissabilities',
+                                        labelText: 'Disabilities',
                                         labelStyle: _labelTextStyle,
                                         floatingLabelBehavior: FloatingLabelBehavior.always
                                       ),
@@ -275,6 +309,7 @@ class _NewPostPageState extends State<NewPostPage> {
                             ),
                           ),
                         ),
+                        
                         Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: Column(
@@ -293,7 +328,7 @@ class _NewPostPageState extends State<NewPostPage> {
                                           _isMale? Colors.blue : Colors.white
                                         ))
                                       ),
-                                      elevation: _isMale==null? 5: (_isMale? 0:5),
+                                      elevation: 5,
                                       child: Container(
                                         height: 30,
                                         width: 100,
@@ -314,10 +349,10 @@ class _NewPostPageState extends State<NewPostPage> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                         side: BorderSide(width: 2, color: _isMale==null? Colors.white : (
-                                          _isMale? Colors.white : Colors.blue
+                                          _isMale? Colors.white : Colors.pink
                                         ))
                                       ),
-                                      elevation: _isMale==null? 5: (_isMale? 5:0),
+                                      elevation: 5,
                                       child: Container(
                                         height: 30,
                                         width: 110,
@@ -337,28 +372,32 @@ class _NewPostPageState extends State<NewPostPage> {
                             ],
                           ),
                         ),
+                        
                         Padding(
                           padding: EdgeInsets.only(top: 25),
                           child: Container(
                             height: 400,
-                            child: TextFormField(
-                              keyboardType: TextInputType.multiline,
-                              minLines: 1,
-                              maxLines: null,
-                              maxLength: 1000,
-                              style: _textInputStyle,
-                              controller: _addInfoController,
-                              decoration: InputDecoration(
-                                hintText: '\n\n\n\n\n\n\n\n               Describe the Creature\n\n\n\n\n\n\n\n',
-                                focusedBorder: _borderDecoration,
-                                enabledBorder: _borderDecoration,
-                                labelText: 'Additional information',
-                                labelStyle: _labelTextStyle,
-                                floatingLabelBehavior: FloatingLabelBehavior.always
+                            child: Center(
+                              child: TextFormField(
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: null,
+                                maxLength: 1000,
+                                //style: _textInputStyle,
+                                controller: _addInfoController,
+                                decoration: InputDecoration(
+                                  hintText: '\n\n\n\n\n\n\n\n                     Describe the Creature\n\n\n\n\n\n\n\n',
+                                  focusedBorder: _borderDecoration,
+                                  enabledBorder: _borderDecoration,
+                                  labelText: 'Additional information',
+                                  labelStyle: _labelTextStyle,
+                                  floatingLabelBehavior: FloatingLabelBehavior.always
+                                ),
                               ),
                             ),
                           ),
                         ),
+                        
                         Padding(
                           padding: EdgeInsets.only(top: 30),
                           child: Container(
@@ -372,7 +411,11 @@ class _NewPostPageState extends State<NewPostPage> {
                                     borderRadius: BorderRadius.circular(18),
                                     side: BorderSide(color: primarySwatch, width: 2)
                                   ),
-                                  onPressed: () => Navigator.pop(context),
+                                  onPressed: () {
+                                    //_petNameController.dispose();
+                                    images = [];
+                                    Navigator.pop(context);
+                                  } ,
                                   child: Container(
                                     width: 100,
                                     height: 30,
@@ -401,9 +444,11 @@ class _NewPostPageState extends State<NewPostPage> {
                             ),
                           ),
                         ),
+                        
                         SizedBox(
                           height: 50,
-                        )
+                        ),
+
                       ],
                     ),
                   ),
@@ -415,4 +460,42 @@ class _NewPostPageState extends State<NewPostPage> {
       ),
     );
   }
+
+
+
+  Future<void> loadAssets() async {
+    String error = 'No Error Dectected';
+
+    try {
+      images = await MultiImagePicker.pickImages(
+        maxImages: 6,
+        enableCamera: true,
+        selectedAssets: images,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+          actionBarColor: "#abcdef",
+          actionBarTitle: "PetAdopt App",
+          allViewTitle: "All Photos",
+          useDetailsView: false,
+          selectCircleStrokeColor: "#000000",
+        ),
+      );
+    } on Exception catch (e) {
+      error = e.toString();
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      images = images;
+      _error = error;
+    });
+  }
+
+
+
 }
+
