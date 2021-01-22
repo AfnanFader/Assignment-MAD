@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               //ANONYMOUS USER ENTRY
-              Positioned(
+              Positioned( //skip button
                 top: 0,
                 right: 0,
                 child: FlatButton(
@@ -180,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _forgotPassword() {
+  Widget _forgotPassword() { ///google sign in as well
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -209,31 +209,31 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                  onTap: () {},
-                  onLongPress: () {},
-                  child: CircleAvatar(
-                    radius: 23,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      FontAwesomeIcons.facebookF,
-                      size: 28,
-                      color: Colors.blue[700],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  onLongPress: () {},
-                  child: CircleAvatar(
-                    child: ClipRRect(
+                  onTap: (){
+                    final provider = Provider.of<UserNotifier>(context, listen: false);
+                    provider.googleLogin();
+                    // .then((value) => provider.setUserUID = 
+                    // );
+                  },
+                  // onTap: () {
+                  //   signInWithGoogle().whenComplete(() {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) {
+                  //           return LoginPage();
+                  //         },
+                  //       ),
+                  //     );
+                  //   });
+                  // },
+                  child: ClipRRect(
                       borderRadius: BorderRadius.circular(27),
                       child: Image.asset(
-                        'assets/image/google.jpg',
-                        fit: BoxFit.contain,
+                        'assets/image/GoogleSignIn.png',
+                        
                       ),
                     ),
-                    radius: 23,
-                  ),
+                   
                 ),
               ],
             ),
