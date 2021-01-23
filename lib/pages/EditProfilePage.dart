@@ -12,6 +12,7 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final _editProfileForm = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _nameController;
   TextEditingController _emailController;
   TextEditingController _phoneController;
@@ -41,6 +42,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         body: Form(
             key: _editProfileForm,
             child: Stack(
@@ -323,6 +325,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           _locationController.text.trim(),
                                           _phoneController.text.trim(),
                                           _isMale);
+                                        
+                                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                          duration: Duration(seconds: 1),
+                                          content: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox( width: 15, height: 15 ,child: CircularProgressIndicator()),
+                                              SizedBox(width: 10,),
+                                              Text('Updating profile ...'),
+                                            ],
+                                          )
+                                        ));
                                     },
                                     child: Container(
                                       width: 100,
