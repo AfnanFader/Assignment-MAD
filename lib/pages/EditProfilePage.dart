@@ -319,6 +319,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                             color: primarySwatch, width: 2)),
                                     onPressed: () {
                                       DatabaseService().updateUser(
+                                          context,
                                           _userID,
                                           _emailController.text.trim(),
                                           _nameController.text.trim(),
