@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:assignment_project/model/localSetting.dart';
 import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:assignment_project/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -19,7 +21,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController _locationController;
   bool _isMale;
   String _userID;
+  String _profilePicture;
+  File _image;
 
+  final picker = ImagePicker();
   final _borderDecoration = OutlineInputBorder(
       borderRadius: BorderRadius.circular(15),
       borderSide: BorderSide(color: Colors.grey[500], width: 2));
@@ -29,6 +34,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     UserNotifier notifier = Provider.of<UserNotifier>(context, listen: false);
     _isMale = notifier.getUserData.isMale;
     _userID = notifier.getUserUID;
+    _profilePicture = notifier.getUserData.profilePicture;
     _nameController =
         TextEditingController(text: notifier.getUserData.username);
     _emailController = TextEditingController(text: notifier.getUserData.email);
@@ -62,20 +68,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               backgroundColor: primarySwatch,
                               radius: 50,
                               child: CircleAvatar(
-                                radius: 48,
-                                backgroundColor: Colors.white,
-                                child: Text(
-                                  'M',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: primarySwatch,
-                                      fontSize: 30),
-                                ),
-                              ),
+                                  radius: 48,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: _profilePicture != null
+                                      ? NetworkImage(_profilePicture)
+                                      : null,
+                                  child: _profilePicture != null
+                                      ? Text('')
+                                      : Text(
+                                          'No Image',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: primarySwatch,
+                                              fontSize: 15),
+                                        )),
                             ),
                           ),
                           FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              getImage();
+                            },
                             child: Text(
                               'Change Picture',
                               style: TextStyle(
@@ -326,18 +338,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           _locationController.text.trim(),
                                           _phoneController.text.trim(),
                                           _isMale);
-                                        
-                                      _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                          duration: Duration(seconds: 1),
-                                          content: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox( width: 15, height: 15 ,child: CircularProgressIndicator()),
-                                              SizedBox(width: 10,),
-                                              Text('Updating profile ...'),
-                                            ],
-                                          )
-                                        ));
+
+                                      _scaffoldKey.currentState
+                                          .showSnackBar(SnackBar(
+                                              duration: Duration(seconds: 1),
+                                              content: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                      width: 15,
+                                                      height: 15,
+                                                      child:
+                                                          CircularProgressIndicator()),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text('Updating profile ...'),
+                                                ],
+                                              )));
                                     },
                                     child: Container(
                                       width: 100,
@@ -378,5 +397,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
             )),
       ),
     );
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        DatabaseService().uploadProfilePicture(
+          _image,
+          Provider.of<UserNotifier>(context, listen: false),
+        );
+      } else {
+        print('No image selected.');
+      }
+    });
   }
 }
