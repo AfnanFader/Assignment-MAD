@@ -676,7 +676,7 @@ class _NewPostPageState extends State<NewPostPage> {
                     GestureDetector(
                       child: Text(
                         snapshot.data ? 'OK' : 'Try Again', 
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.blue),
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: primarySwatch),
                       ),
                       onTap: snapshot.data ? () {
                         Navigator.of(context).pop(true);
