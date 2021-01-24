@@ -104,11 +104,16 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                       child: CircleAvatar(
                         radius: 46,
                         backgroundColor: primarySwatch,
-                        child: CircleAvatar(
-                          radius: 44,
-                          backgroundColor: Colors.white,
-                          child: Text('${notifier.getUserData.username[0].toUpperCase()}',style: TextStyle(color: primarySwatch, fontSize: 35),),
-                        ),
+                         child: CircleAvatar(
+                            radius: 44,
+                            backgroundColor: Colors.white,
+                            backgroundImage: notifier.getUserData.profilePicture != null
+                                ? NetworkImage(notifier.getUserData.profilePicture )
+                                : null,
+                            child: notifier.getUserData.profilePicture  != null
+                                ? Text('')
+                                : Text('${notifier.getUserData.username[0].toUpperCase()}',style: TextStyle(color: primarySwatch, fontSize: 35),),
+                          ),
                       ),
                     ),
                     Padding(
