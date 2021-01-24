@@ -28,7 +28,7 @@ class UserDetail {
     email = data['email'];
     phone = data['phone'];
     address = data['address'] ?? '';
-    address = data['profilePicture'] ?? null;
+    profilePicture = data['profilePicture'] ?? null;
     isMale = data['isMale'];
     postDoc = data['postDoc'] ?? [];
     wishlist = data['wishlist'] ?? [];
