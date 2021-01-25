@@ -149,6 +149,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
   Widget _changeLoginSignUp() {
     return Padding(
       padding: EdgeInsets.only(top: 20),
@@ -187,6 +188,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 
   Widget _forgotPassword() { ///google sign in as well
     return Consumer<UserNotifier>(
@@ -251,6 +253,7 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
+
 
   Widget _loginSignUpButton(BuildContext context) {
     return Consumer<UserNotifier>(
@@ -318,6 +321,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
   Widget _emailTextFormField() {
     return Container(
       // color: Colors.black,
@@ -353,6 +357,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 
   Widget _passwordTextFormField() {
     return Container(
@@ -398,6 +403,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 
   Widget _confirmpasswordTextFormField() {
     return Container(
@@ -550,6 +556,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+
   Widget _usernameTextFormField() {
     return Container(
       // color: Colors.black,
@@ -583,6 +590,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+
   Widget _phoneTextFormField() {
     return Container(
       // color: Colors.black,
@@ -614,6 +622,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+
 
   Widget _addressTextFormField() {
     return Container(
@@ -647,6 +656,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+
 
   Widget _genderPick() {
     return Padding(
@@ -749,6 +759,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+
 
   Widget _submitButton(BuildContext prov) {
     return RaisedButton(

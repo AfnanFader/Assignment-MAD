@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "353512373711-4rqii7rplmphne9nqjs2f9gcbl3f3vso.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.BaraiDev.assignment_project",
+            "certificate_hash": "8e9b0817d808a573609491b9a7d2fe63bf37724c"
+          }
+        },
+        {
           "client_id": "353512373711-ni63mdkl2k7jp9a7udnmai3795fu13q9.apps.googleusercontent.com",
           "client_type": 3
         }

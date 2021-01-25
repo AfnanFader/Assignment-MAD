@@ -9,9 +9,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
 
-  final GoogleSignIn _googleAuth = GoogleSignIn();
+  AuthResultStatus _status;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _database = FirebaseFirestore.instance;
+  final GoogleSignIn _googleAuth = GoogleSignIn();
 
   Stream<UserID> get loginStream {
     return _auth.authStateChanges().map((User data) {
@@ -26,13 +27,20 @@ class AuthService {
   signIn(String email, String password, UserNotifier notifier) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password)
-      .then((UserCredential user) {
+      .then((result) {
         notifier.setGoogleSignIn = false;
         print("[FirebaseAuth] Logging in process completed");
+        if (result != null) {
+          _status = AuthResultStatus.successful;
+        } else {
+          _status = AuthResultStatus.undefined;
+        }
       });
     } catch (e) {
-      print("[FirebaseAuth] Error during logging");
+      print("[FirebaseAuth] Error during logging: code(${e.code}) $e");
+      _status = AuthExceptionHandler.handleException(e);
     }
+  return _status;
   }
 
   signOut(bool isGoogleSignIn) async {
@@ -52,6 +60,7 @@ class AuthService {
       print("[FirebaseAuth] Error during logging out $e");
     }
   }
+
 
   Future<bool> signUp(String email, String password, UserDetail data) async {
     try {
@@ -90,6 +99,7 @@ class AuthService {
                     phone: userData.user.phoneNumber,
                     email: userData.user.email,
                     username: userData.user.displayName,
+                    isMale: true
                   );
                   return await _database.collection('User').doc(userData.user.uid).set(usertemp.toMap()).then((_) {
                     notifier.setGoogleSignIn = true;
@@ -107,41 +117,56 @@ class AuthService {
       return false;
     }
   }
-
-  
-usernamefx(String email, String uid) async {
-  try {
-
-    Query q = FirebaseFirestore.instance.collection("User").where('email', isEqualTo: email);
-
-    q.get().then((value) async{
-      if(value.docs.isEmpty){
-        print('email not existed');
-        await _database.collection('User').doc(uid).set({
-          'email': email,
-          'address' : "",
-          'isMale' : true,
-          'phone' : "",
-          'postDoc' : null,
-          'username' : email,
-          'wishlist' : null,
-        });
-
-        //subscribe to notifier
-
-      } else {
-        print('email existed already');
-        //subscribe to notifier
-      }
-    } 
-    );
-      
-  } catch (e) {
-    print("[FirebaseAuth] Error usernamefx $e");
-  }
 }
 
 
+
+enum AuthResultStatus {
+  successful,
+  emailAlreadyExists,
+  wrongPassword,
+  invalidEmail,
+  userNotFound,
+  userDisabled,
+  operationNotAllowed,
+  tooManyRequests,
+  undefined,
+}
+
+
+class AuthExceptionHandler {
+  static handleException(e) {
+    print(e.code);
+    var status;
+    switch (e.code) {
+      case "wrong-password":
+        status = AuthResultStatus.wrongPassword;
+        break;
+      case "user-not-found":
+        status = AuthResultStatus.userNotFound;
+        break;
+      default:
+        status = AuthResultStatus.undefined;
+    }
+    return status;
+  }
+
+  static generateExceptionMessage(exceptionCode) {
+    String errorMessage;
+    switch (exceptionCode) {
+      case AuthResultStatus.wrongPassword:
+        errorMessage = "Your login credentials are invalid.";
+        break;
+      case AuthResultStatus.userNotFound:
+        errorMessage = "User with this email doesn't exist.";
+        break;
+      default:
+        //errorMessage = "Undefined Error during sign in.";
+        errorMessage = '$exceptionCode';
+    }
+
+    return errorMessage;
+  }
 }
 
 
