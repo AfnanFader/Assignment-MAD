@@ -140,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage>
                                                           ),
                                                           Expanded(
                                                             child: Text(
-                                                              '03 Dec 13:44',
+                                                              card.data[index].dateCreated.toDate().toString().substring(0,10),
                                                               textAlign:
                                                                   TextAlign
                                                                       .right,
