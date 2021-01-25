@@ -100,11 +100,14 @@ class _ProfilePageState extends State<ProfilePage>
                                         child: Row(
                                           children: <Widget>[
                                             Expanded(
-                                              child: Text('Pet Alley',
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold)),
+                                              child: Text(
+                                                'Pet Alley',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
                                             Expanded(
                                               child: Text(
@@ -123,8 +126,24 @@ class _ProfilePageState extends State<ProfilePage>
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 5.0),
                                         child: Row(children: [
-                                          Text('Male',
-                                              textAlign: TextAlign.left)
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Image.asset(
+                                                    "assets/image/Male_Icon.png",
+                                                    width: 14.0,
+                                                    height: 14.0,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: " Male",
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ])),
                                     Padding(
                                         padding: EdgeInsets.symmetric(
@@ -132,9 +151,23 @@ class _ProfilePageState extends State<ProfilePage>
                                         child: Row(
                                           children: <Widget>[
                                             Expanded(
-                                              child: Text(
-                                                'Persian',
-                                                textAlign: TextAlign.left,
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    WidgetSpan(
+                                                      child: Image.asset(
+                                                        "assets/image/Cat_Icon.png",
+                                                        width: 16.0,
+                                                        height: 16.0,
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: " Persian",
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                             Expanded(
