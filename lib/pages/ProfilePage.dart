@@ -1,8 +1,10 @@
 import 'package:assignment_project/model/localSetting.dart';
+import 'package:assignment_project/model/pet.dart';
 import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:assignment_project/pages/EditProfilePage.dart';
 import 'package:assignment_project/pages/NewPostPage.dart';
 import 'package:assignment_project/services/auth_service.dart';
+import 'package:assignment_project/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,11 +18,14 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   TabController _controller;
+  Stream<List<Pet>> petPost;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
+    UserNotifier notifier = Provider.of<UserNotifier>(context, listen: false);
+    petPost = DatabaseService().getPetPost(notifier.getUserUID);
   }
 
   @override
@@ -64,131 +69,193 @@ class _ProfilePageState extends State<ProfilePage>
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      children: List.generate(100, (index) {
-                        return Container(
-                          child: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 2,
-                                    color: primarySwatch,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12.0)),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://firebasestorage.googleapis.com/v0/b/mad-assignment-24697.appspot.com/o/petPostImages%2FxEAtEwGeYAXO5anAzyn2m7T9cvg2%2FMuchkin%20Fat%20CatdCEXcS?alt=media&token=41e7433a-3723-48c6-9882-12b8d447c329'),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(10.0),
-                                            topLeft: Radius.circular(10.0)),
-                                      ),
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.all(5.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: Text(
-                                                'Pet Alley',
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                '03 Dec 13:44',
-                                                textAlign: TextAlign.right,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Colors.grey[700],
-                                                    fontSize: 10),
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                                    Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 5.0),
-                                        child: Row(children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Image.asset(
-                                                    "assets/image/Male_Icon.png",
-                                                    width: 14.0,
-                                                    height: 14.0,
-                                                  ),
+                    child: StreamBuilder<List<Pet>>(
+                        stream: petPost,
+                        builder: (context, card) {
+                          if (card.hasData) {
+                            if (card.data.isNotEmpty) {
+                              return Container(
+                                child: GridView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: card.data.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2),
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(5.0),
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: primarySwatch,
                                                 ),
-                                                TextSpan(
-                                                  text: " Male",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ])),
-                                    Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 5.0, vertical: 5.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    WidgetSpan(
-                                                      child: Image.asset(
-                                                        "assets/image/Cat_Icon.png",
-                                                        width: 16.0,
-                                                        height: 16.0,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(12.0)),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            '${card.data[index].images[0]}'),
+                                                        fit: BoxFit.cover,
                                                       ),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topRight: Radius
+                                                                  .circular(
+                                                                      10.0),
+                                                              topLeft: Radius
+                                                                  .circular(
+                                                                      10.0)),
                                                     ),
-                                                    TextSpan(
-                                                      text: " Persian",
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                'Kuala Lumpur',
-                                                textAlign: TextAlign.right,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Colors.grey[700],
-                                                    fontSize: 10),
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                                  ],
-                                )),
-                          ),
-                        );
-                      }),
-                    ),
+                                                  ),
+                                                  Padding(
+                                                      padding:
+                                                          EdgeInsets.all(5.0),
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Text(
+                                                              '${card.data[index].petName}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left,
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Text(
+                                                              '03 Dec 13:44',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .right,
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      700],
+                                                                  fontSize: 10),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )),
+                                                  Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 5.0),
+                                                      child: Row(children: [
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              WidgetSpan(
+                                                                child:
+                                                                    Image.asset(
+                                                                  (card.data[index]
+                                                                          .gender)
+                                                                      ? "assets/image/Male_Icon.png"
+                                                                      : "assets/image/Female_Icon.png",
+                                                                  width: 14.0,
+                                                                  height: 14.0,
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text: (card
+                                                                        .data[
+                                                                            index]
+                                                                        .gender)
+                                                                    ? " Male"
+                                                                    : " Female",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ])),
+                                                  Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 5.0,
+                                                              vertical: 5.0),
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: RichText(
+                                                              text: TextSpan(
+                                                                children: [
+                                                                  WidgetSpan(
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/image/Cat_Icon.png",
+                                                                      width:
+                                                                          16.0,
+                                                                      height:
+                                                                          16.0,
+                                                                    ),
+                                                                  ),
+                                                                  TextSpan(
+                                                                    text:
+                                                                        " ${card.data[index].type}",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Text(
+                                                              card.data[index]
+                                                                  .location,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .right,
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      700],
+                                                                  fontSize: 10),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )),
+                                                ],
+                                              )),
+                                        ),
+                                      );
+                                    }),
+                              );
+                            }
+                            return Container(
+                                color: Colors.white,
+                                child: Center(child: Text('No post yet.')));
+                          } else
+                            return Center(
+                              child: Text('No post yet.'),
+                            );
+                        }),
                   ),
                   ListView.builder(
                     itemCount: 10,
@@ -214,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage>
 
   Widget _topPart(BuildContext context) {
     return Expanded(
-      flex: 15,
+      flex: 10,
       child: Container(
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
