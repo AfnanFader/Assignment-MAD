@@ -108,19 +108,19 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-                  ),
+                  )
                 )
               ],
-            ),
-            //ANONYMOUS USER ENTRY
-            Positioned(
-              top: 0,
-              right: 0,
-              child: FlatButton(
-                child: Container(
-                  width: 60,
-                  height: 25,
-                  decoration: BoxDecoration(
+              ),
+              //ANONYMOUS USER ENTRY
+              Positioned( //skip button
+                top: 0,
+                right: 0,
+                child: FlatButton(
+                  child: Container(
+                    width: 60,
+                    height: 25,
+                    decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15)),
                   child: Row(
@@ -188,139 +188,133 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _forgotPassword() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          FlatButton(
-            onPressed: () {},
-            child: Text(
-              'Forgot Password?',
-              style: TextStyle(color: Colors.white, fontSize: 15),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: (MediaQuery.of(context).size.width / 2) - 100,
-                  height: 1,
-                  color: Colors.white,
+  Widget _forgotPassword() { ///google sign in as well
+    return Consumer<UserNotifier>(
+      builder: (context, notifier, child) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              FlatButton(
+                onPressed: () {},
+                child: Text(
+                  'Forgot Password?',
+                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
-                Text(
-                  'Or Connect with',
-                  style: TextStyle(color: Colors.white70),
-                ),
-                Container(
-                  width: (MediaQuery.of(context).size.width / 2) - 100,
-                  height: 1,
-                  color: Colors.white,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 40, right: 40, top: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () {},
-                  onLongPress: () {},
-                  child: CircleAvatar(
-                    radius: 23,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      FontAwesomeIcons.facebookF,
-                      size: 28,
-                      color: Colors.blue[700],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: (MediaQuery.of(context).size.width / 2) - 100,
+                      height: 1,
+                      color: Colors.white,
                     ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  onLongPress: () {},
-                  child: CircleAvatar(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(27),
-                      child: Image.asset(
-                        'assets/image/google.jpg',
-                        fit: BoxFit.contain,
-                      ),
+                    Text(
+                      'Or Connect with',
+                      style: TextStyle(color: Colors.white70),
                     ),
-                    radius: 23,
-                  ),
+                    Container(
+                      width: (MediaQuery.of(context).size.width / 2) - 100,
+                      height: 1,
+                      color: Colors.white,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )
-        ],
-      ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 40, right: 40, top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        AuthService().googleAuthentication(notifier);
+                      },
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(27),
+                          child: Image.asset(
+                            'assets/image/GoogleSignIn.png',
+                            
+                          ),
+                        ),
+                      
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 
   Widget _loginSignUpButton(BuildContext context) {
-    return RaisedButton(
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40),
-          side: BorderSide(color: Colors.white)),
-      padding: EdgeInsets.all(12),
-      child: Container(
-        height: 15,
-        width: MediaQuery.of(context).size.width,
-        child: Center(
-          child: Text(
-            _isLogin ? 'LOGIN' : 'SIGN UP',
-            style: TextStyle(
-                color: primarySwatch,
-                fontWeight: FontWeight.bold,
-                fontSize: 16),
+    return Consumer<UserNotifier>(
+      builder: (context, notifier, child) {
+        return RaisedButton(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40),
+              side: BorderSide(color: Colors.white)),
+          padding: EdgeInsets.all(12),
+          child: Container(
+            height: 15,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: Text(
+                _isLogin ? 'LOGIN' : 'SIGN UP',
+                style: TextStyle(
+                    color: primarySwatch,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              ),
+            ),
           ),
-        ),
-      ),
-      onPressed: _isLogin
-          ? () {
-              AuthService().signIn(_emailTextController.text.trim(),
-                  _passwordTextController.text.trim());
-            }
-          : () {
-              if (_formKey.currentState.validate()) {
-                _scaffoldKey.currentState.showSnackBar(SnackBar(
-                    duration: Duration(seconds: 2),
-                    content: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                            width: 15,
-                            height: 15,
-                            child: CircularProgressIndicator()),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text('Checking details ...'),
-                      ],
-                    )));
-                // Navigator.push(context, MaterialPageRoute(
-                //   builder: (context) => RegisterPage(
-                //     email: _emailTextController.text.trim(),
-                //     password: _passwordTextController.text.trim(),
-                //   )
-                // ));
-                Timer(
-                    Duration(milliseconds: 2500),
-                    () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RegisterPage(
-                                  email: _emailTextController.text.trim(),
-                                  password: _passwordTextController.text.trim(),
-                                ))));
-              }
-            },
+          onPressed: _isLogin
+              ? () {
+                  AuthService().signIn(_emailTextController.text.trim(),
+                      _passwordTextController.text.trim(), notifier);
+                }
+              : () {
+                  if (_formKey.currentState.validate()) {
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        duration: Duration(seconds: 2),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                width: 15,
+                                height: 15,
+                                child: CircularProgressIndicator()),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text('Checking details ...'),
+                          ],
+                        )));
+                    // Navigator.push(context, MaterialPageRoute(
+                    //   builder: (context) => RegisterPage(
+                    //     email: _emailTextController.text.trim(),
+                    //     password: _passwordTextController.text.trim(),
+                    //   )
+                    // ));
+                    Timer(
+                        Duration(milliseconds: 2500),
+                        () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterPage(
+                                      email: _emailTextController.text.trim(),
+                                      password: _passwordTextController.text.trim(),
+                                    ))));
+                  }
+                },
+        );  
+      },
     );
   }
 
@@ -839,6 +833,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Future.delayed(Duration(seconds: 1)).then((value) {
                 Navigator.pop(context);
                 userNotifier.setEnable = true;
+                userNotifier.setGoogleSignIn = false;
               });
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,

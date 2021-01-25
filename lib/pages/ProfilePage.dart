@@ -89,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
 
   Widget _topPart(BuildContext context) {
     return Expanded(
-        flex: 10,
+        flex: 15,
         child: Container(
           width: MediaQuery.of(context).size.width,
           color: Colors.white,
@@ -179,7 +179,11 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                 right: 8,
                 child: IconButton(
                   icon: Icon(Icons.logout, color: primarySwatch, size: 26,),
-                  onPressed: () => AuthService().signOut(),
+                  //onPressed: () => AuthService().signOut(),
+                  onPressed: (){
+                    final provider = Provider.of<UserNotifier>(context, listen: false);
+                    AuthService().signOut(provider.getGoogleSignIn);
+                  },
                 ),
               )
             ],
