@@ -10,16 +10,27 @@ class UserNotifier with ChangeNotifier {
   String _userUID;
   UserDetail _userData;
   bool _enable;
+  bool _googleSignIn;
   String _test ='ayam';
 
   String get getUserUID => _userUID;
   UserDetail get getUserData => _userData;
   bool get getEnable => _enable;
   String get ayammas => _test;
+  bool get getGoogleSignIn => _googleSignIn;
 
   set setUserUID(String uid) {
     _userUID = uid;
     print("[UserNotifier] UID : $_userUID");
+  }
+
+  set setGoogleSignIn(bool status) {
+    _googleSignIn = status;
+    if (status) {
+      print('[UserNotifier] Google Sign In Enabled');
+    } else {
+      print('[UserNotifier] Google Sign In Disabled');
+    }
   }
 
   set setEnable(bool x) {
@@ -31,56 +42,4 @@ class UserNotifier with ChangeNotifier {
     print('[UserNotifiere] Local Profile Downloaded');
   }
 
-
-  // ------------------ DAN GOOGLE SIGN IN ---------------------------//
-
-
-  final googleSignIn = GoogleSignIn();
-  bool _isSigningIn;
-
-
-  GoogleSignInProvider() {
-    _isSigningIn = false;
-  }
-
-  bool get isSigningIn => _isSigningIn;
-
-  set isSigningIn(bool isSigningIn) {
-    _isSigningIn = isSigningIn;
-    notifyListeners();
-  }
-
-  Future googleLogin() async {
-    isSigningIn = true;
-
-    final user = await googleSignIn.signIn();
-
-    if (user == null) {
-      isSigningIn = false;
-      return;
-    } else {
-      final googleAuth = await user.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      await FirebaseAuth.instance.signInWithCredential(credential)
-      .then((value) {
-        AuthService().usernamefx(value.user.email, value.user.uid);
-        _userUID = value.user.uid; //tak jadi
-      });
-
-      isSigningIn = false;
-    }
-  }
-
-  void logout() async {
-    await googleSignIn.disconnect();
-    FirebaseAuth.instance.signOut();
-  }
-
-
-  
 }
