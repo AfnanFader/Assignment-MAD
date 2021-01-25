@@ -68,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Column(
                 children: [
+                  
                   Padding(
                     padding: EdgeInsets.only(top: 40, bottom: 80),
                     child: Container(
@@ -78,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
+                  
                   Form(
                     key: _formKey,
                     child: Padding(
@@ -114,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   )
+                
                 ],
               ),
               //ANONYMOUS USER ENTRY
@@ -140,13 +143,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () {},
                 ),
-              )
+              ),
+         
             ],
           )
         ),
       ),
     );
   }
+
 
   Widget _changeLoginSignUp() {
     return Padding(
@@ -179,6 +184,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 
   Widget _forgotPassword() { ///google sign in as well
     return Container(
@@ -243,6 +249,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
   Widget _loginSignUpButton(BuildContext context) {
     return RaisedButton(
       color: Colors.white,
@@ -263,9 +270,10 @@ class _LoginPageState extends State<LoginPage> {
       ),
       onPressed: _isLogin ?
       () {
-        AuthService().signIn(_emailTextController.text.trim(), _passwordTextController.text.trim());
+        continueToHome();
       } : () {
         if (_formKey.currentState.validate()) {
+
           _scaffoldKey.currentState.showSnackBar(SnackBar(
             duration: Duration(seconds: 2),
             content: Row(
@@ -292,6 +300,7 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
+
 
   Widget _emailTextFormField() {
     return Container(
@@ -326,6 +335,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 
   Widget _passwordTextFormField() {
     return Container(
@@ -367,6 +377,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
   Widget _confirmpasswordTextFormField() {
     return Container(
       height: 70,
@@ -407,6 +418,63 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+
+  void continueToHome() async {
+
+    if (_formKey.currentState.validate()) {
+
+      dynamic result = await AuthService().signIn(_emailTextController.text.trim(), _passwordTextController.text.trim());
+
+      if (result == AuthResultStatus.successful) {
+        //proceed to login
+      } else {
+        final errorMessage = AuthExceptionHandler.generateExceptionMessage(result);
+        _showErrorAlertDialog(errorMessage);
+      }
+    } else{
+      print('not validate');
+    }
+  }
+
+
+  _showErrorAlertDialog(error) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          actionsPadding: EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0))
+          ),
+          title: Center(
+            child: Column(
+              children:<Widget>[
+                IconButton(
+                  icon: Icon(Icons.error, size: 40, color: primarySwatch), 
+                  onPressed: null),
+                  SizedBox(height: 5,),
+                Text(
+                'Login Failed',
+                style: TextStyle(color: primarySwatch),
+              ),
+            ]
+            ),
+          ),
+          content: Text(error),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Okay", style: TextStyle(fontWeight: FontWeight.bold, color: primarySwatch,)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      }
+    );
+  }
+
 
 }
 
@@ -502,6 +570,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+
   Widget _usernameTextFormField() {
     return Container(
       // color: Colors.black,
@@ -535,6 +604,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+
   Widget _phoneTextFormField() {
     return Container(
       // color: Colors.black,
@@ -567,6 +637,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+
   Widget _addressTextFormField() {
     return Container(
       // color: Colors.black,
@@ -598,6 +669,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+
 
   Widget _genderPick() {
     return Padding(
@@ -670,6 +742,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+
 
   Widget _submitButton(BuildContext prov) {
     return RaisedButton(
