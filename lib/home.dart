@@ -83,8 +83,8 @@ class _HomeState extends State<Home> {
                 title: Text('Blog')
               ),
               SalomonBottomBarItem(
-                icon: Icon(FontAwesomeIcons.commentAlt),
-                title: Text('Chat')
+                icon: Icon(FontAwesomeIcons.calendar),
+                title: Text('Adopt')
               ),
               SalomonBottomBarItem(
                 icon: Icon(FontAwesomeIcons.idBadge),

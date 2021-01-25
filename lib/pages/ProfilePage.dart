@@ -280,151 +280,148 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   Widget _topPart(BuildContext context) {
-    return Expanded(
-      flex: 10,
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        color: Colors.white,
-        child: Stack(
-          children: [
-            Consumer<UserNotifier>(
-              builder: (context, notifier, widget) => Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 50),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
+      child: Stack(
+        children: [
+          Consumer<UserNotifier>(
+            builder: (context, notifier, widget) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: CircleAvatar(
+                    radius: 46,
+                    backgroundColor: primarySwatch,
                     child: CircleAvatar(
-                      radius: 46,
-                      backgroundColor: primarySwatch,
-                      child: CircleAvatar(
-                        radius: 44,
-                        backgroundColor: Colors.white,
-                        backgroundImage: notifier.getUserData.profilePicture !=
-                                null
-                            ? NetworkImage(notifier.getUserData.profilePicture)
-                            : null,
-                        child: notifier.getUserData.profilePicture != null
-                            ? Text('')
-                            : Text(
-                                '${notifier.getUserData.username[0].toUpperCase()}',
-                                style: TextStyle(
-                                    color: primarySwatch, fontSize: 35),
-                              ),
-                      ),
+                      radius: 44,
+                      backgroundColor: Colors.white,
+                      backgroundImage: notifier.getUserData.profilePicture !=
+                              null
+                          ? NetworkImage(notifier.getUserData.profilePicture)
+                          : null,
+                      child: notifier.getUserData.profilePicture != null
+                          ? Text('')
+                          : Text(
+                              '${notifier.getUserData.username[0].toUpperCase()}',
+                              style: TextStyle(
+                                  color: primarySwatch, fontSize: 35),
+                            ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Text(
-                      '${notifier.getUserData.username}',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 3),
-                    child: Text('${notifier.getUserData.email}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                        )),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RaisedButton(
-                          elevation: 2,
-                          color: Colors.white,
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditProfilePage())),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(color: primarySwatch, width: 1)),
-                          child: Container(
-                            width: 90,
-                            child: Center(
-                                child: Text(
-                              'Edit Profile',
-                              style:
-                                  TextStyle(color: primarySwatch, fontSize: 13),
-                            )),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        RaisedButton(
-                          elevation: 2,
-                          color: primarySwatch,
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NewPostPage())),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(color: primarySwatch, width: 1)),
-                          child: Container(
-                            width: 90,
-                            child: Center(
-                                child: Text(
-                              'New Post',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 13),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Positioned(
-              top: 15,
-              child: Container(
-                height: 35,
-                width: 120,
-                child: Center(
-                    child: Text(
-                  'PROFILE',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 19),
-                )),
-                decoration: BoxDecoration(
-                    color: primarySwatch,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(17.5),
-                        bottomRight: Radius.circular(17.5))),
-              ),
-            ),
-            Positioned(
-              top: 13,
-              right: 8,
-              child: IconButton(
-                icon: Icon(
-                  Icons.logout,
-                  color: primarySwatch,
-                  size: 26,
                 ),
-                //onPressed: () => AuthService().signOut(),
-                onPressed: () {
-                  final provider =
-                      Provider.of<UserNotifier>(context, listen: false);
-                  provider.logout();
-                  AuthService().signOut();
-                },
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Text(
+                    '${notifier.getUserData.username}',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 3),
+                  child: Text('${notifier.getUserData.email}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                      )),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RaisedButton(
+                        elevation: 2,
+                        color: Colors.white,
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditProfilePage())),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(color: primarySwatch, width: 1)),
+                        child: Container(
+                          width: 90,
+                          child: Center(
+                              child: Text(
+                            'Edit Profile',
+                            style:
+                                TextStyle(color: primarySwatch, fontSize: 13),
+                          )),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      RaisedButton(
+                        elevation: 2,
+                        color: primarySwatch,
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewPostPage())),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(color: primarySwatch, width: 1)),
+                        child: Container(
+                          width: 90,
+                          child: Center(
+                              child: Text(
+                            'New Post',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 13),
+                          )),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            top: 15,
+            child: Container(
+              height: 35,
+              width: 120,
+              child: Center(
+                  child: Text(
+                'PROFILE',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 19),
+              )),
+              decoration: BoxDecoration(
+                  color: primarySwatch,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(17.5),
+                      bottomRight: Radius.circular(17.5))),
+            ),
+          ),
+          Positioned(
+            top: 13,
+            right: 8,
+            child: IconButton(
+              icon: Icon(
+                Icons.logout,
+                color: primarySwatch,
+                size: 26,
               ),
-            )
-          ],
-        ),
+              //onPressed: () => AuthService().signOut(),
+              onPressed: () {
+                final provider =
+                    Provider.of<UserNotifier>(context, listen: false);
+                provider.logout();
+                AuthService().signOut();
+              },
+            ),
+          )
+        ],
       ),
     );
   }
