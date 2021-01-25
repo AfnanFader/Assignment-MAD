@@ -67,9 +67,14 @@ class DatabaseService {
     }
 
   }
-  //blog trending
+  //pet post
   Stream<List<Pet>> getPetPost(String uidCreator) {
     return _firestore.collection('PetPosts').where('uidCreator', isEqualTo: uidCreator).snapshots().map((event) =>
+        event.docs.map((e) => Pet.fromMap(e.data(), e.id)).toList());
+  }
+
+  Stream<List<Pet>> getPetLiked(String uidCreator) {
+    return _firestore.collection('PetPosts').where('LikedUsers', arrayContains: uidCreator).snapshots().map((event) =>
         event.docs.map((e) => Pet.fromMap(e.data(), e.id)).toList());
   }
 
