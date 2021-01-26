@@ -46,11 +46,11 @@ class AuthService {
   signOut(bool isGoogleSignIn) async {
     try {
       if (isGoogleSignIn) {
-        await _googleAuth.disconnect().then((_) async {
-          await _auth.signOut().then((_) {
-            print('[FirebaseAuth] Succesful sign out');
-          });
+      await _googleAuth.disconnect().then((_) async {
+        await _auth.signOut().then((_) {
+          print('[FirebaseAuth] Succesful sign out');
         });
+      });
       } else {
         await _auth.signOut().then((_) {
           print("[FirebaseAuth] Succesful sign out");

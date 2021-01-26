@@ -64,6 +64,11 @@ class _WrapperState extends State<Wrapper> {
             UserNotifier userNotifier = Provider.of<UserNotifier>(context, listen: false);
             if (snapshot.data != null) {
               userNotifier.setUserUID = snapshot.data.uid;
+              if (userNotifier.getGoogleSignIn != null) {
+                print('[Google] ${userNotifier.getGoogleSignIn}');
+              } else {
+                userNotifier.setGoogleSignIn = false;
+              }
               return HomeTransitionPage();
             } else {
               return LoginPage();

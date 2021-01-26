@@ -500,21 +500,21 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: Column(
                           // crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              'YOU TOT IT\'S THAT EZ ???',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                                child: Image.asset(
-                              'assets/image/hang.gif',
-                              fit: BoxFit.cover,
-                            )),
+                            // Text(
+                            //   'YOU TOT IT\'S THAT EZ ???',
+                            //   style: TextStyle(
+                            //       color: Colors.white,
+                            //       fontSize: 20,
+                            //       fontWeight: FontWeight.bold),
+                            // ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            // Container(
+                            //     child: Image.asset(
+                            //   'assets/image/hang.gif',
+                            //   fit: BoxFit.cover,
+                            // )),
                             SizedBox(
                               height: 20,
                             ),
