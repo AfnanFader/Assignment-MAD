@@ -1,10 +1,14 @@
-//import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
-//import 'package:assignment_project/model/localSetting.dart';
-import 'package:assignment_project/holders/image_carousel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:assignment_project/model/localSetting.dart';
+import 'package:assignment_project/model/pet.dart';
+import 'package:assignment_project/notifier/UserNotifier.dart';
+import 'package:assignment_project/pages/EditProfilePage.dart';
+import 'package:assignment_project/pages/NewPostPage.dart';
+import 'package:assignment_project/services/auth_service.dart';
+import 'package:assignment_project/services/database_service.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ViewPage extends StatefulWidget {
   ViewPage({Key key}) : super(key: key);

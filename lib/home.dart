@@ -40,8 +40,8 @@ class _HomeState extends State<Home> {
           physics: NeverScrollableScrollPhysics(),
           onPageChanged: (index) => _selectedIndex = index,
           children: [
-            ViewPage(
-              key: PageStorageKey('ViewPage'),
+            HomePage(
+              key: PageStorageKey('HomePage'),
             ),
             BlogPage(
               key: PageStorageKey('BlogPage'),

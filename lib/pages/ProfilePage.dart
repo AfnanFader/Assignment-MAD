@@ -619,9 +619,14 @@ class _ProfilePageState extends State<ProfilePage>
               top: 13,
               right: 8,
               child: IconButton(
-                icon: Icon(Icons.logout, color: primarySwatch, size: 26,),
-                onPressed: (){
-                  final provider = Provider.of<UserNotifier>(context, listen: false);
+                icon: Icon(
+                  Icons.logout,
+                  color: primarySwatch,
+                  size: 26,
+                ),
+                onPressed: () {
+                  final provider =
+                      Provider.of<UserNotifier>(context, listen: false);
                   AuthService().signOut(provider.getGoogleSignIn);
                 },
               ),
