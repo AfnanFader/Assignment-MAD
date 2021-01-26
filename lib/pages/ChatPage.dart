@@ -14,7 +14,6 @@ class ChatPage extends StatefulWidget {
   _ChatPageState createState() => _ChatPageState();
 }
 
-<<<<<<< HEAD
 class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin{
 
   TabController _tabController;
@@ -29,19 +28,10 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     _petListRequestStatus = DatabaseService().getPetPostRequest(notifier.getUserUID);
     super.initState();
   }
-=======
-class _ChatPageState extends State<ChatPage> {
-  final TextEditingController _chatSearchTextController =
-      TextEditingController();
-  final _borderDecoration = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(17.5),
-      borderSide: BorderSide(color: primarySwatch, width: 2));
->>>>>>> b0d63692d95b6d66de3e169fbb30f79019b26ee8
 
   @override
   Widget build(BuildContext context) {
     return Container(
-<<<<<<< HEAD
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
@@ -220,60 +210,6 @@ class _ChatPageState extends State<ChatPage> {
       leading: CircleAvatar(
         backgroundImage: NetworkImage(data.petImage),
         radius: 30,
-=======
-        width: MediaQuery.of(context).size.width,
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _topPageTitle(),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 75,
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.grey[300], width: 1))),
-              child: ListTile(
-                title: Text('Ayam Percik'),
-                subtitle: Text('I want 3 chicken'),
-                leading: CircleAvatar(
-                  child: Text('A'),
-                  radius: 23,
-                ),
-                trailing: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '17/3/2020',
-                      style: TextStyle(color: primarySwatch, fontSize: 10),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: primarySwatch,
-                      child: Text(
-                        '20',
-                        style: TextStyle(color: Colors.white, fontSize: 10),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ));
-  }
-
-  Widget _topPageTitle() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 80,
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(width: 1, color: Colors.grey[400])),
->>>>>>> b0d63692d95b6d66de3e169fbb30f79019b26ee8
       ),
       title: Text(data.petName),
       trailing: Container(
@@ -282,7 +218,6 @@ class _ChatPageState extends State<ChatPage> {
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-<<<<<<< HEAD
             if (data.status == 'Approved') ... {
               Container(
                 height: 30,
@@ -314,46 +249,6 @@ class _ChatPageState extends State<ChatPage> {
                       fontWeight: FontWeight.bold
                     ),
                   ),
-=======
-            Container(
-              height: 35,
-              width: 110,
-              child: Center(
-                  child: Text(
-                'CHATS',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 19),
-              )),
-              decoration: BoxDecoration(
-                  color: primarySwatch,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(17.5),
-                      bottomRight: Radius.circular(17.5))),
-            ),
-            SizedBox(
-              width: 100,
-            ),
-            Container(
-              height: 35,
-              width: 150,
-              child: Center(
-                child: TextFormField(
-                  style: TextStyle(fontSize: 14),
-                  controller: _chatSearchTextController,
-                  decoration: InputDecoration(
-                      labelText: 'Search',
-                      labelStyle: TextStyle(
-                          color: primarySwatch, fontWeight: FontWeight.w300),
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      suffixIcon: Icon(
-                        Icons.search_sharp,
-                        color: primarySwatch,
-                      ),
-                      enabledBorder: _borderDecoration,
-                      focusedBorder: _borderDecoration),
->>>>>>> b0d63692d95b6d66de3e169fbb30f79019b26ee8
                 ),
               ),
             },
@@ -408,9 +303,5 @@ class _ChatPageState extends State<ChatPage> {
       )
     );
   }
-<<<<<<< HEAD
 
 }
-=======
-}
->>>>>>> b0d63692d95b6d66de3e169fbb30f79019b26ee8

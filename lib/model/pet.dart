@@ -54,6 +54,7 @@ class Pet {
       'PetName' : petName,
       'TypeOfPet' : type,
       'Age' : age,
+      'vaccinated' : vaccine,
       'Location' : location,
       'Disabilities' : cacat,
       'Gender' : gender,
@@ -78,6 +79,7 @@ class Pet {
     cacat = data['Disabilities'];
     gender = data['Gender'];
     info = data['AdditionalInfo'];
+    vaccine = data['vaccinated'];
 
     requestAdopt = data['requestAdopt'];
     likedUsers = data['LikedUsers'];
