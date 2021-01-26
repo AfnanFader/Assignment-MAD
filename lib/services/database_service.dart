@@ -12,17 +12,15 @@ import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:random_string/random_string.dart';
 
 class DatabaseService {
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  CollectionReference petPostsCollectionRef = FirebaseFirestore.instance.collection('PetPosts');
-
+  CollectionReference petPostsCollectionRef =
+      FirebaseFirestore.instance.collection('PetPosts');
 
   //INITIALIZATION & ONUPDATE PROFILE
   Future<UserDetail> getUserData(String uid) {
     return _firestore.collection('User').doc(uid).get().then(
         (DocumentSnapshot snapshot) => UserDetail.fromMap(snapshot.data()));
   }
-
 
   Future updateUser(context, String uid, String email, String username,
       String address, String phone, bool isMale) async {
@@ -42,8 +40,8 @@ class DatabaseService {
     });
   }
 
-
-  Future<void> uploadProfilePicture(File profilePicture, UserNotifier userNotifier) async {
+  Future<void> uploadProfilePicture(
+      File profilePicture, UserNotifier userNotifier) async {
     String profileUrl;
     StorageTaskSnapshot snapshot = await FirebaseStorage.instance
         .ref()
@@ -55,28 +53,44 @@ class DatabaseService {
       profileUrl = await snapshot.ref.getDownloadURL();
       print('[User Profile Picture] Storage Success upload');
 
-       await _firestore.collection('User').doc(userNotifier.getUserUID).update({
-          'profilePicture': profileUrl
-        }).then((value) {
-          this.getUserData(userNotifier.getUserUID).then((user) => userNotifier.setUserData = user);
-          print('[Firestore] User Profile Picture Updated');
-        });
+      await _firestore
+          .collection('User')
+          .doc(userNotifier.getUserUID)
+          .update({'profilePicture': profileUrl}).then((value) {
+        this
+            .getUserData(userNotifier.getUserUID)
+            .then((user) => userNotifier.setUserData = user);
+        print('[Firestore] User Profile Picture Updated');
+      });
     } else {
       print(
           '[User Profile Picture] Storage Error during upload : ${snapshot.error.toString()}');
       throw ('something wrong here boi');
     }
-
   }
+
   //pet post
   Stream<List<Pet>> getPetPost(String uidCreator) {
-    return _firestore.collection('PetPosts').where('uidCreator', isEqualTo: uidCreator).snapshots().map((event) =>
-        event.docs.map((e) => Pet.fromMap(e.data(), e.id)).toList());
+    return _firestore
+        .collection('PetPosts')
+        .where('uidCreator', isEqualTo: uidCreator)
+        .snapshots()
+        .map((event) =>
+            event.docs.map((e) => Pet.fromMap(e.data(), e.id)).toList());
   }
 
   Stream<List<Pet>> getPetLiked(String uidCreator) {
-    return _firestore.collection('PetPosts').where('LikedUsers', arrayContains: uidCreator).snapshots().map((event) =>
-        event.docs.map((e) => Pet.fromMap(e.data(), e.id)).toList());
+    return _firestore
+        .collection('PetPosts')
+        .where('LikedUsers', arrayContains: uidCreator)
+        .snapshots()
+        .map((event) =>
+            event.docs.map((e) => Pet.fromMap(e.data(), e.id)).toList());
+  }
+
+  Stream<List<Pet>> getAllPets(String uidCreator) {
+    return _firestore.collection('PetPosts').snapshots().map(
+        (event) => event.docs.map((e) => Pet.fromMap(e.data(), e.id)).toList());
   }
 
   //blog trending
@@ -97,29 +111,31 @@ class DatabaseService {
         (event) => event.docs.map((e) => BlogDogs.fromMap(e.data())).toList());
   }
 
-
-    //Firebase Storage for Posts
-  Future<List<String>> uploadPetImage(List<Asset> asset, String creatorUID, String petname) async {
-
+  //Firebase Storage for Posts
+  Future<List<String>> uploadPetImage(
+      List<Asset> asset, String creatorUID, String petname) async {
     List<String> uploadUrl = [];
 
     await Future.wait(
         asset.map((Asset image) async {
-
           String fileName = petname + randomAlphaNumeric(6); //name of file
 
           ByteData byteData = await image.getByteData(quality: 100);
           List<int> imageData = byteData.buffer.asUint8List();
 
-          StorageTaskSnapshot snapshot = await FirebaseStorage.instance.ref().child('/petPostImages/$creatorUID/$fileName')
-          .putData(imageData).onComplete;
-          
+          StorageTaskSnapshot snapshot = await FirebaseStorage.instance
+              .ref()
+              .child('/petPostImages/$creatorUID/$fileName')
+              .putData(imageData)
+              .onComplete;
+
           if (snapshot.error == null) {
             String downloadUrl = await snapshot.ref.getDownloadURL();
             uploadUrl.add(downloadUrl);
             print('[Pet Post] Storage Success upload');
           } else {
-            print('[Pet Post] Storage Error during upload : ${snapshot.error.toString()}');
+            print(
+                '[Pet Post] Storage Error during upload : ${snapshot.error.toString()}');
             throw ('something wrong here boi');
           }
         }),
@@ -130,15 +146,15 @@ class DatabaseService {
     return uploadUrl;
   }
 
-
   //Submit Post Pets
-  Future<bool> submitNewPetPost(Pet petData, UserNotifier userNotifier, List<Asset> asset) async {
-
+  Future<bool> submitNewPetPost(
+      Pet petData, UserNotifier userNotifier, List<Asset> asset) async {
     try {
-      return Future.wait([uploadPetImage(asset, userNotifier.getUserUID, petData.petName)]).then((value) async {
-
+      return Future.wait(
+              [uploadPetImage(asset, userNotifier.getUserUID, petData.petName)])
+          .then((value) async {
         petData.setPetImages = value[0];
-        return petPostsCollectionRef.add(petData.toMap()).then((doc) {        
+        return petPostsCollectionRef.add(petData.toMap()).then((doc) {
           print("[Pet Post] Succesfully upload Pet documents");
           return true;
         });
