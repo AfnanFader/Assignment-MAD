@@ -1,9 +1,16 @@
+import 'package:assignment_project/pages/ViewPage.dart';
+import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:assignment_project/model/localSetting.dart';
+import 'package:assignment_project/model/pet.dart';
 import 'package:assignment_project/notifier/UserNotifier.dart';
+import 'package:assignment_project/pages/EditProfilePage.dart';
+import 'package:assignment_project/pages/NewPostPage.dart';
+import 'package:assignment_project/services/auth_service.dart';
+import 'package:assignment_project/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:assignment_project/model/localSetting.dart';
-import 'package:assignment_project/services/database_service.dart';
-import 'package:assignment_project/model/pet.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -13,11 +20,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // String valueLocation, valueType, valueGender;
-  // List listLocation = ["Kuala Lumpur", "Selangor", "Negeri Sembilan"];
-  // List listType = ["Cat", "Dog"];
-  // List listGender = ["Male", "Female"];
-
+  String valueLocation, valueType, valueGender;
+  List listLocation = ["Kuala Lumpur", "Selangor", "Negeri Sembilan"];
+  List listType = ["Cat", "Dog"];
+  List listGender = ["Male", "Female"];
   Stream<List<Pet>> petsAll;
 
   @override
@@ -26,18 +32,6 @@ class _HomePageState extends State<HomePage> {
     UserNotifier notifier = Provider.of<UserNotifier>(context, listen: false);
     petsAll = DatabaseService().getAllPets(notifier.getUserUID);
   }
-
-  //hello
-
-  //sample list
-  // final List<String> listSample = [
-  //   'assets/image/Dog 1.png',
-  //   'assets/image/Dog 2.png',
-  //   'assets/image/Dog 3.png',
-  //   'assets/image/Dog 4.png',
-  //   'assets/image/Dog 5.png',
-  //   'assets/image/Dog 6.png'
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +120,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            //isSearching ? searchUsersList() : chatRoomList()
           ],
         ),
       ),
@@ -154,99 +147,116 @@ class _HomePageState extends State<HomePage> {
                             padding: EdgeInsets.all(5.0),
                             child: InkWell(
                               onTap: () => {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => PetDetailPage(
-                                //             pet: card.data[index])))
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ViewPage(pet: card.data[index])))
                               },
-                              child: Column(
-                                children: [
-                                  Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          width: 2,
-                                          color: primarySwatch,
-                                        ),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12.0)),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    '${card.data[index].images[0]}'),
-                                                fit: BoxFit.cover,
-                                              ),
-                                              borderRadius: BorderRadius.only(
-                                                  topRight:
-                                                      Radius.circular(10.0),
-                                                  topLeft:
-                                                      Radius.circular(10.0)),
-                                            ),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 2,
+                                      color: primarySwatch,
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12.0)),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                '${card.data[index].images[0]}'),
+                                            fit: BoxFit.cover,
                                           ),
-                                          Padding(
-                                              padding: EdgeInsets.all(5.0),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Expanded(
-                                                    child: Text(
-                                                      '${card.data[index].petName}',
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(10.0),
+                                              topLeft: Radius.circular(10.0)),
+                                        ),
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.all(5.0),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Text(
+                                                  '${card.data[index].petName}',
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  card.data[index].dateCreated
+                                                      .toDate()
+                                                      .toString()
+                                                      .substring(0, 10),
+                                                  textAlign: TextAlign.right,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      color: Colors.grey[700],
+                                                      fontSize: 10),
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                      Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Row(children: [
+                                            RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  WidgetSpan(
+                                                    child: Image.asset(
+                                                      (card.data[index].gender)
+                                                          ? "assets/image/Male_Icon.png"
+                                                          : "assets/image/Female_Icon.png",
+                                                      width: 14.0,
+                                                      height: 14.0,
                                                     ),
                                                   ),
-                                                  Expanded(
-                                                    child: Text(
-                                                      card.data[index]
-                                                          .dateCreated
-                                                          .toDate()
-                                                          .toString()
-                                                          .substring(0, 10),
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          color:
-                                                              Colors.grey[700],
-                                                          fontSize: 10),
-                                                    ),
+                                                  TextSpan(
+                                                    text: (card
+                                                            .data[index].gender)
+                                                        ? " Male"
+                                                        : " Female",
+                                                    style: TextStyle(
+                                                        color: Colors.black),
                                                   ),
                                                 ],
-                                              )),
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 5.0),
-                                              child: Row(children: [
-                                                RichText(
+                                              ),
+                                            ),
+                                          ])),
+                                      Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 5.0, vertical: 5.0),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: RichText(
                                                   text: TextSpan(
                                                     children: [
                                                       WidgetSpan(
                                                         child: Image.asset(
-                                                          (card.data[index]
-                                                                  .gender)
-                                                              ? "assets/image/Male_Icon.png"
-                                                              : "assets/image/Female_Icon.png",
-                                                          width: 14.0,
-                                                          height: 14.0,
+                                                          "assets/image/Cat_Icon.png",
+                                                          width: 16.0,
+                                                          height: 16.0,
                                                         ),
                                                       ),
                                                       TextSpan(
-                                                        text: (card.data[index]
-                                                                .gender)
-                                                            ? " Male"
-                                                            : " Female",
+                                                        text:
+                                                            " ${card.data[index].type}",
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.black),
@@ -254,54 +264,22 @@ class _HomePageState extends State<HomePage> {
                                                     ],
                                                   ),
                                                 ),
-                                              ])),
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 5.0,
-                                                  vertical: 5.0),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Expanded(
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          WidgetSpan(
-                                                            child: Image.asset(
-                                                              "assets/image/Cat_Icon.png",
-                                                              width: 16.0,
-                                                              height: 16.0,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text:
-                                                                " ${card.data[index].type}",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Text(
-                                                      card.data[index].location,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          color:
-                                                              Colors.grey[700],
-                                                          fontSize: 10),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
-                                        ],
-                                      )),
-                                ],
-                              ),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  card.data[index].location,
+                                                  textAlign: TextAlign.right,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      color: Colors.grey[700],
+                                                      fontSize: 10),
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                    ],
+                                  )),
                             ),
                           ));
                         }),

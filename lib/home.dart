@@ -3,6 +3,7 @@ import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:assignment_project/pages/BlogPage.dart';
 import 'package:assignment_project/pages/ChatPage.dart';
 import 'package:assignment_project/pages/HomePage.dart';
+import 'package:assignment_project/pages/ViewPage.dart';
 import 'package:assignment_project/pages/ProfilePage.dart';
 import 'package:assignment_project/services/database_service.dart';
 import 'package:flutter/material.dart';
@@ -16,18 +17,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  final PageController _pageController = PageController(
-    initialPage: 0,
-    keepPage: true
-  );
+  final PageController _pageController =
+      PageController(initialPage: 0, keepPage: true);
 
   int _selectedIndex = 0;
 
   @override
   void initState() {
     UserNotifier notifier = Provider.of<UserNotifier>(context, listen: false);
-    DatabaseService().getUserData(notifier.getUserUID).then((user) => notifier.setUserData = user);
+    DatabaseService()
+        .getUserData(notifier.getUserUID)
+        .then((user) => notifier.setUserData = user);
     super.initState();
   }
 
@@ -57,39 +57,26 @@ class _HomeState extends State<Home> {
         bottomNavigationBar: Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                width: 2,
-                color: Colors.grey[300]
-              )
-            ),
+            border: Border(top: BorderSide(width: 2, color: Colors.grey[300])),
           ),
           child: SalomonBottomBar(
             currentIndex: _selectedIndex,
             onTap: (index) {
               setState(() {
                 _selectedIndex = index;
-                _pageController.animateToPage(index, duration: Duration(milliseconds: 200), curve: Curves.ease);
+                _pageController.animateToPage(index,
+                    duration: Duration(milliseconds: 200), curve: Curves.ease);
               });
             },
             items: [
               SalomonBottomBarItem(
-
-                icon: Icon(FontAwesomeIcons.home),
-                title: Text('Home')
-              ),
+                  icon: Icon(FontAwesomeIcons.home), title: Text('Home')),
               SalomonBottomBarItem(
-                icon: Icon(FontAwesomeIcons.newspaper),
-                title: Text('Blog')
-              ),
+                  icon: Icon(FontAwesomeIcons.newspaper), title: Text('Blog')),
               SalomonBottomBarItem(
-                icon: Icon(FontAwesomeIcons.commentAlt),
-                title: Text('Chat')
-              ),
+                  icon: Icon(FontAwesomeIcons.calendar), title: Text('Adopt')),
               SalomonBottomBarItem(
-                icon: Icon(FontAwesomeIcons.idBadge),
-                title: Text('Profile')
-              ),
+                  icon: Icon(FontAwesomeIcons.idBadge), title: Text('Profile')),
             ],
           ),
         ),
