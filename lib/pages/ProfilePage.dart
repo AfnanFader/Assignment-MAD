@@ -3,6 +3,7 @@ import 'package:assignment_project/model/pet.dart';
 import 'package:assignment_project/notifier/UserNotifier.dart';
 import 'package:assignment_project/pages/EditProfilePage.dart';
 import 'package:assignment_project/pages/NewPostPage.dart';
+import 'package:assignment_project/pages/ViewPage.dart';
 import 'package:assignment_project/services/auth_service.dart';
 import 'package:assignment_project/services/database_service.dart';
 import 'package:flutter/material.dart';
@@ -90,13 +91,13 @@ class _ProfilePageState extends State<ProfilePage>
                                         padding: EdgeInsets.all(5.0),
                                         child: InkWell(
                                           onTap: () => {
-                                            // Navigator.push(
-                                            //     context,
-                                            //     MaterialPageRoute(
-                                            //         builder: (context) =>
-                                            //             PetDetailPage(
-                                            //                 pet: card
-                                            //                     .data[index])))
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ViewPage(
+                                                            pet: card
+                                                                .data[index])))
                                           },
                                           child: Container(
                                               decoration: BoxDecoration(
@@ -619,9 +620,14 @@ class _ProfilePageState extends State<ProfilePage>
               top: 13,
               right: 8,
               child: IconButton(
-                icon: Icon(Icons.logout, color: primarySwatch, size: 26,),
-                onPressed: (){
-                  final provider = Provider.of<UserNotifier>(context, listen: false);
+                icon: Icon(
+                  Icons.logout,
+                  color: primarySwatch,
+                  size: 26,
+                ),
+                onPressed: () {
+                  final provider =
+                      Provider.of<UserNotifier>(context, listen: false);
                   AuthService().signOut(provider.getGoogleSignIn);
                 },
               ),
