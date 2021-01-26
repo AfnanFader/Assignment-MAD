@@ -25,7 +25,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     UserNotifier notifier = Provider.of<UserNotifier>(context, listen: false);
     _tabController = TabController(vsync: this, length: 2);
     _petListRequest = DatabaseService().getPetPostRequest(notifier.getUserUID);
-    _petListRequestStatus = DatabaseService().getPetPostRequest(notifier.getUserUID);
+    _petListRequestStatus = DatabaseService().getPetPostRequest(notifier.getUserData.username);
     super.initState();
   }
 
@@ -97,6 +97,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                             stream: _petListRequest,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
+                                // if (snapshot)
                                 return ListView.separated(
                                   itemCount: snapshot.data.length,
                                   itemBuilder: (context, index) {
