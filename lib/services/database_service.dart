@@ -88,12 +88,8 @@ class DatabaseService {
   }
 
   Stream<List<Pet>> getAllPets(String uidCreator) {
-    return _firestore
-        .collection('PetPosts')
-        .where('uidCreator')
-        .snapshots()
-        .map((event) =>
-            event.docs.map((e) => Pet.fromMap(e.data(), e.id)).toList());
+    return _firestore.collection('PetPosts').snapshots().map(
+        (event) => event.docs.map((e) => Pet.fromMap(e.data(), e.id)).toList());
   }
 
   //blog trending
