@@ -171,8 +171,8 @@ class DatabaseService {
         event.docs.map((e) => Request.fromMap(e.data(), e.id)).toList());
   }
 
-  Stream<List<Request>> getPetPostRequestStatus(String username) {
-    return _firestore.collection('Request').where('username', isEqualTo: username).snapshots().map((event) =>
+  Stream<List<Request>> getPetPostRequestStatus(String uid) {
+    return _firestore.collection('Request').where('userUID', isEqualTo: uid).snapshots().map((event) =>
         event.docs.map((e) => Request.fromMap(e.data(), e.id)).toList());
   }
 
