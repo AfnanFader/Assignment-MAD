@@ -154,11 +154,11 @@ class _HomePageState extends State<HomePage> {
                             padding: EdgeInsets.all(5.0),
                             child: InkWell(
                               onTap: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PetDetailPage(
-                                            pet: card.data[index])))
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => PetDetailPage(
+                                //             pet: card.data[index])))
                               },
                               child: Column(
                                 children: [
