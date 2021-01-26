@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:assignment_project/model/localSetting.dart';
 import 'package:assignment_project/model/pet.dart';
+import 'package:provider/provider.dart';
+import 'package:assignment_project/notifier/UserNotifier.dart';
+import 'package:assignment_project/model/request.dart';
+import 'package:assignment_project/services/database_service.dart';
 
-class ViewPage extends StatelessWidget {
+class ViewPage extends StatefulWidget {
   final Pet pet;
   ViewPage({Key key, @required this.pet}) : super(key: key);
 
+  @override
+  _ViewPageState createState() => _ViewPageState();
+}
+
+class _ViewPageState extends State<ViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +36,7 @@ class ViewPage extends StatelessWidget {
                           //   _current = index;
                           // });
                         },
-                        items: pet.images.map((value) {
+                        items: widget.pet.images.map((value) {
                           return Builder(
                             builder: (BuildContext context) {
                               return Container(
@@ -58,7 +67,7 @@ class ViewPage extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 15, left: 20),
                               child: Container(
                                   child: Text(
-                                pet.petName,
+                                widget.pet.petName,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -81,7 +90,7 @@ class ViewPage extends StatelessWidget {
                                         children: [
                                           WidgetSpan(
                                             child: Image.asset(
-                                              (pet.gender)
+                                              (widget.pet.gender)
                                                   ? "assets/image/Male_Icon.png"
                                                   : "assets/image/Female_Icon.png",
                                               width: 18.0,
@@ -89,7 +98,7 @@ class ViewPage extends StatelessWidget {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: (pet.gender)
+                                            text: (widget.pet.gender)
                                                 ? " Male"
                                                 : " Female",
                                             style: TextStyle(
@@ -112,7 +121,7 @@ class ViewPage extends StatelessWidget {
                                   )),
                                   Container(
                                     child: Text(
-                                        pet.dateCreated
+                                        widget.pet.dateCreated
                                             .toDate()
                                             .toString()
                                             .substring(0, 10),
@@ -142,7 +151,7 @@ class ViewPage extends StatelessWidget {
                                           ),
                                         ),
                                         TextSpan(
-                                          text: " ${pet.type}",
+                                          text: " ${widget.pet.type}",
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 18.0),
@@ -161,7 +170,7 @@ class ViewPage extends StatelessWidget {
                                     size: 15,
                                   )),
                                   Container(
-                                    child: Text(" ${pet.location}",
+                                    child: Text(" ${widget.pet.location}",
                                         style: TextStyle(
                                             color: Colors.grey, fontSize: 15)),
                                   ),
@@ -232,7 +241,7 @@ class ViewPage extends StatelessWidget {
                                             fontSize: 15)),
                                   ),
                                   Container(
-                                    child: Text(" | ${pet.age} years",
+                                    child: Text(" | ${widget.pet.age} years",
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 15)),
                                   ),
@@ -249,9 +258,9 @@ class ViewPage extends StatelessWidget {
                                   ),
                                   Container(
                                     child: Text(
-                                        (pet.cacat == '')
+                                        (widget.pet.cacat == '')
                                             ? "| No"
-                                            : "| ${pet.cacat}",
+                                            : "| ${widget.pet.cacat}",
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 15)),
                                   ),
@@ -260,22 +269,39 @@ class ViewPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: RaisedButton(
-                                color: primarySwatch,
-                                onPressed: () {},
-                                child: Center(
-                                  child: Text("Adopt Pet",
-                                      style: TextStyle(color: Colors.white),
-                                      textAlign: TextAlign.center),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18),
-                                    side: BorderSide(color: primarySwatch)),
-                              )),
+                        Consumer<UserNotifier>(
+                          builder: (context, notifier, child) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Container(
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  child: RaisedButton(
+                                    color: primarySwatch,
+                                    onPressed: () {
+                                      Request req = Request(
+                                        petImage: widget.pet.images[0],
+                                        petName: widget.pet.petName,
+                                        phoneNumber: widget.pet.phoneNumber,
+                                        postUID: widget.pet.docID,
+                                        profilePic: notifier.getUserData.profilePicture,
+                                        status: 'Pending',
+                                        uidCreator: widget.pet.uidCreator,
+                                        userUID: notifier.getUserUID,
+                                        username: notifier.getUserData.username
+                                      );
+                                      DatabaseService().submitRequest(req);
+                                    },
+                                    child: Center(
+                                      child: Text("Adopt Pet",
+                                          style: TextStyle(color: Colors.white),
+                                          textAlign: TextAlign.center),
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18),
+                                        side: BorderSide(color: primarySwatch)),
+                                  )),
+                            );
+                          },
                         ),
                         Container(
                           child: Padding(
@@ -302,9 +328,9 @@ class ViewPage extends StatelessWidget {
                                       children: [
                                         RichText(
                                           text: TextSpan(
-                                            text: (pet.info == "")
+                                            text: (widget.pet.info == "")
                                                 ? "No additional info"
-                                                : pet.info,
+                                                : widget.pet.info,
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 11),
