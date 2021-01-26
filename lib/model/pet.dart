@@ -16,6 +16,7 @@ class Pet {
   bool gender;
   String info;
 
+  List requestAdopt;
   List likedUsers;
   String phoneNumber;
   Timestamp dateCreated;
@@ -36,6 +37,7 @@ class Pet {
     this.likedUsers,
     this.phoneNumber,
     this.dateCreated,
+    this.requestAdopt
   });
 
 
@@ -57,6 +59,7 @@ class Pet {
       'Gender' : gender,
       'AdditionalInfo' : info,
 
+      'requestAdopt' : requestAdopt,
       'LikedUsers' : likedUsers,
       'PhoneNumber' : phoneNumber,
       "DateCreated" : dateCreated,
@@ -76,6 +79,7 @@ class Pet {
     gender = data['Gender'];
     info = data['AdditionalInfo'];
 
+    requestAdopt = data['requestAdopt'];
     likedUsers = data['LikedUsers'];
     phoneNumber = data['PhoneNumber'];
     dateCreated = data["DateCreated"];

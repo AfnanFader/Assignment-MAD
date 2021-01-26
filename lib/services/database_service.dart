@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:assignment_project/model/blog.dart';
 import 'package:assignment_project/model/pet.dart';
+import 'package:assignment_project/model/request.dart';
 import 'package:assignment_project/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -145,6 +146,39 @@ class DatabaseService {
     } catch (e) {
       print("[Pet Post] Error in create Pet Post function : ${e.toString()}");
       return false;
+    }
+  }
+
+  //REQUEST
+  Stream<List<Request>> getPetPostRequest(String uidCreator) {
+    return _firestore.collection('Request').where('uidCreator', isEqualTo: uidCreator).snapshots().map((event) =>
+        event.docs.map((e) => Request.fromMap(e.data(), e.id)).toList());
+  }
+
+  Stream<List<Request>> getPetPostRequestStatus(String uid) {
+    return _firestore.collection('Request').where('userUID', isEqualTo: uid).snapshots().map((event) =>
+        event.docs.map((e) => Request.fromMap(e.data(), e.id)).toList());
+  }
+
+  updateRequest(Request req, String status) async {
+    try {
+      _firestore.collection('Request').doc(req.requestID).update({
+        'status' : status.trim()
+      }).then((_) {
+        print('[Request] Update Successful');
+      });
+    } catch (e) {
+      print('[Request] Error during updating : ${e.toString()}');
+    }
+  }
+
+  submitRequest(Request req) async {
+    try {
+      _firestore.collection('Request').doc().set(req.toMap()).then((_) {
+        print('[Request] Submit Successful');
+      });
+    } catch (e) {
+      print('[Request] Error during submitting : ${e.toString()}');
     }
   }
 

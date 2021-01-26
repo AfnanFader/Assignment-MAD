@@ -74,7 +74,6 @@ class _HomeState extends State<Home> {
             },
             items: [
               SalomonBottomBarItem(
-
                 icon: Icon(FontAwesomeIcons.home),
                 title: Text('Home')
               ),
